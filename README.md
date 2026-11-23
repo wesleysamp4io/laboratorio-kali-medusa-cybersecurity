@@ -52,10 +52,11 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 - [x] Configuração inicial da rede e endereços IP documentada.
 - [x] Reconhecimento do serviço FTP e validação manual de autenticação documentados.
 - [x] Simulação FTP executada com Medusa e resultado registrado.
+- [x] Cenário DVWA testado com Medusa e credencial validada manualmente.
 - [ ] Validar a persistência do IP do Metasploitable após reinicialização.
 - [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
 - [ ] Adicionar as capturas de tela em `images/evidencias/`.
-- [ ] Executar e documentar o cenário web com DVWA.
+- [x] Executar e documentar o cenário web com DVWA.
 - [ ] Executar e documentar o cenário SMB.
 - [ ] Revisar os resultados e as medidas de mitigação.
 
