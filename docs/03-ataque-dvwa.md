@@ -20,8 +20,10 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Realizar uma tentativa manual com dados fictícios.
 - [x] Observar como os parâmetros do formulário aparecem na URL.
 - [x] Registrar a mensagem exibida após a tentativa inválida.
-- [ ] Confirmar e registrar o nível de segurança selecionado na página DVWA Security.
-- [ ] Preparar e executar a atividade automatizada conforme o roteiro da aula, somente no DVWA local.
+- [x] Confirmar que o Medusa possui o módulo `web-form` versão `2.1`.
+- [x] Consultar as opções do módulo `web-form`.
+- [ ] Identificar o cookie da sessão ativa do DVWA, sem publicá-lo no repositório.
+- [ ] Executar a simulação automatizada, somente no DVWA local.
 - [ ] Registrar a ferramenta, os parâmetros e os resultados reais.
 
 ## Observação do formulário
@@ -48,22 +50,52 @@ A mensagem confirma que a tentativa manual com a senha fictícia incorreta foi r
 
 Quando credenciais são transmitidas na URL, podem acabar expostas no histórico do navegador, em logs de servidores, em ferramentas de monitoramento e em outros registros que armazenem a URL. Aplicações reais não devem enviar senhas dessa forma. O uso de HTTPS é necessário para proteger o tráfego em trânsito, mas não elimina a exposição causada por colocar a senha na própria URL.
 
-> A captura utilizada para esta observação deve ser adicionada ao repositório após ocultar qualquer dado que não deva ser publicado. Não registrar senhas reais no relatório.
+> Não registre cookies de sessão nem senhas reais em capturas ou arquivos do repositório.
+
+## Verificação do Medusa
+
+No Kali Linux, foi executado:
+
+```bash
+medusa -M web-form -q
+```
+
+**Resultado observado:** o Medusa exibiu o módulo `web-form.mod`, versão `2.1`, destinado a formulários web.
+
+As opções consultadas incluem:
+
+- `FORM`: caminho do formulário.
+- `FORM-DATA`: método HTTP e campos enviados.
+- `DENY-SIGNAL`: texto que indica falha de autenticação.
+- `CUSTOM-HEADER`: cabeçalhos HTTP adicionais, necessários neste laboratório para enviar o cookie da sessão do DVWA.
+- `USER-AGENT`: identificação do navegador na requisição.
+
+## Parâmetros identificados no formulário
+
+Com base na URL observada durante a tentativa manual, o formulário utiliza:
+
+| Opção | Valor observado |
+|---|---|
+| Caminho | `/dvwa/vulnerabilities/brute/` |
+| Método | `GET` |
+| Campo de usuário | `username` |
+| Campo de senha | `password` |
+| Campo adicional | `Login=Login` |
+| Mensagem de falha | `Username and/or password incorrect.` |
+
+A sessão autenticada do navegador é mantida por cookies. Para reproduzir a requisição no laboratório, será necessário consultar no Firefox os cookies ativos do endereço `192.168.100.10` e utilizá-los localmente como cabeçalho HTTP. **O valor do cookie é um segredo de sessão: não o compartilhe e não o adicione ao GitHub.**
 
 ## Procedimento
 
-Os próximos passos e comandos serão documentados somente após a execução no ambiente local. O teste deverá permanecer restrito à aplicação DVWA do laboratório.
-
-```text
-# Registrar aqui os passos efetivamente realizados na atividade.
-```
+A automação ainda não foi executada. O comando, os parâmetros efetivos e o resultado serão registrados depois da execução e validação no DVWA local.
 
 ## Evidências
 
 - [ ] Captura da página Brute Force.
 - [ ] Captura da URL com os valores de senha omitidos ou ocultados.
 - [ ] Captura da mensagem de tentativa inválida.
-- [ ] Evidências do teste automatizado, quando realizado.
+- [ ] Evidência da disponibilidade do módulo `web-form`.
+- [ ] Evidência do teste automatizado, quando realizado, sem expor cookies ou credenciais.
 
 Armazenar as imagens em `images/evidencias/`.
 
@@ -76,6 +108,8 @@ Armazenar as imagens em `images/evidencias/`.
 - Tentativa manual: realizada com senha fictícia incorreta.
 - Comportamento observado: parâmetros de usuário, senha e botão aparecem na URL (GET).
 - Resposta da aplicação: `Username and/or password incorrect.`
+- Medusa: versão `2.3`.
+- Módulo web: `web-form.mod`, versão `2.1`.
 - Teste automatizado: ainda não executado.
 
 ## Análise
