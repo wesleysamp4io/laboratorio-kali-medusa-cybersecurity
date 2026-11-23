@@ -93,6 +93,12 @@ A revisão do código-fonte do módulo mostra que ele monta a requisição como 
 
 **Próximo ajuste a validar:** usar `FORM:dvwa/vulnerabilities/brute/` e repetir a verificação somente depois de confirmar que o cookie de sessão corresponde à sessão atual do DVWA.
 
+### Diagnóstico HTTP com cURL
+
+Foi enviada uma única requisição de teste com senha deliberadamente incorreta, utilizando a sessão local. O terminal exibiu `HTTP/1.1 200 OK`, mas o filtro não encontrou no corpo da resposta nem a mensagem `Username and/or password incorrect.` nem o texto `Welcome`.
+
+**Interpretação:** o servidor respondeu com HTTP 200, mas a resposta ainda não correspondeu a nenhum dos dois marcadores esperados. Isso não comprova login válido nem inválido; a resposta precisa ser inspecionada para identificar se é a página Brute Force, uma página de login/sessão ou outro conteúdo. O cookie não deve ser exibido ou publicado.
+
 ## Próxima verificação
 
 Antes de repetir a lista inteira, validar com uma única requisição controlada que o cookie e o caminho corretos retornam a mensagem de falha conhecida quando é enviada uma senha deliberadamente incorreta. Só depois disso será repetido o teste automatizado, mantendo baixa concorrência e o alvo restrito a `192.168.100.10`.
