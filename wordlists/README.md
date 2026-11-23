@@ -4,10 +4,10 @@ As listas desta pasta são pequenas e artificiais, criadas exclusivamente para o
 
 ## FTP
 
-O arquivo [`ftp-lab.txt`](ftp-lab.txt) contém quatro candidatos de teste, um por linha, para a atividade FTP no Metasploitable 2.
+O arquivo [`passwords-ftp.txt`](passwords-ftp.txt) contém quatro candidatos de teste, um por linha, para a atividade FTP no Metasploitable 2.
 
 - Lista curta, destinada somente ao host de laboratório `192.168.100.10`.
-- O valor `msfadmin` corresponde à credencial padrão frequentemente usada no Metasploitable 2; confirme que corresponde à senha digitada na validação manual antes do exercício.
+- Foi utilizada no exercício com a conta de laboratório `msfadmin`.
 - Não use esta lista contra sistemas externos ou contas reais.
 
 ## Boas práticas
