@@ -19,13 +19,13 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 
 | Componente | Finalidade |
 |---|---|
-| Kali Linux | Máquina utilizada para os testes de auditoria |
-| Metasploitable 2 | Máquina vulnerável para práticas em laboratório |
+| Kali Linux | Máquina utilizada para os testes de auditoria (`192.168.100.20`) |
+| Metasploitable 2 | Máquina vulnerável para práticas em laboratório (`192.168.100.10`) |
 | DVWA | Aplicação web intencionalmente vulnerável para o cenário web |
 | Oracle VirtualBox | Virtualização das máquinas |
-| Rede Host-only | Comunicação controlada entre as máquinas do laboratório |
+| Rede Interna | Rede interna do VirtualBox chamada `lab-int` |
 
-> A topologia final, os endereços IP e a configuração efetivamente utilizada serão registrados em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md).
+> A configuração observada utiliza **Rede Interna (Internal Network)** do VirtualBox, não o modo **Host-only Adapter**. Os detalhes e as pendências de validação estão em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md).
 
 ## Estrutura do repositório
 
@@ -42,18 +42,22 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 │   └── evidencias/
 ├── scripts/
 └── wordlists/
+    └── passwords-ftp.txt
 ```
 
 ## Andamento
 
 - [x] Repositório público criado.
 - [x] Estrutura inicial de documentação criada.
-- [ ] Configuração do laboratório registrada.
-- [ ] Teste FTP executado e documentado.
-- [ ] Teste web com DVWA executado e documentado.
-- [ ] Cenário SMB documentado.
-- [ ] Evidências adicionadas.
-- [ ] Resultados e medidas de mitigação revisados.
+- [x] Configuração inicial da rede e endereços IP documentada.
+- [x] Reconhecimento do serviço FTP e validação manual de autenticação documentados.
+- [x] Simulação FTP executada com Medusa e resultado registrado.
+- [ ] Validar a persistência do IP do Metasploitable após reinicialização.
+- [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
+- [ ] Adicionar as capturas de tela em `images/evidencias/`.
+- [ ] Executar e documentar o cenário web com DVWA.
+- [ ] Executar e documentar o cenário SMB.
+- [ ] Revisar os resultados e as medidas de mitigação.
 
 ## Como a documentação será apresentada
 
