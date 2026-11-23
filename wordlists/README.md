@@ -10,6 +10,14 @@ O arquivo [`passwords-ftp.txt`](passwords-ftp.txt) contém quatro candidatos de 
 - Foi utilizada no exercício com a conta de laboratório `msfadmin`.
 - Não use esta lista contra sistemas externos ou contas reais.
 
+## DVWA
+
+O arquivo [`passwords-dvwa.txt`](passwords-dvwa.txt) contém os quatro candidatos utilizados no cenário Brute Force do DVWA local.
+
+- Lista curta, utilizada somente no formulário de laboratório.
+- A autenticação de `admin` com o candidato `welcome1` foi confirmada manualmente no DVWA.
+- Não reutilize esses valores fora deste exercício.
+
 ## Boas práticas
 
 - Não armazene senhas pessoais, credenciais corporativas ou dados vazados.
