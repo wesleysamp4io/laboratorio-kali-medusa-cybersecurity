@@ -16,8 +16,8 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - [x] Confirmar o endereço IP do alvo: `192.168.100.10`.
 - [x] Confirmar que o serviço FTP está disponível no alvo.
 - [x] Validar uma autenticação manual de teste.
+- [x] Verificar a instalação do Medusa e o módulo FTP.
 - [ ] Preparar uma pequena wordlist exclusivamente para o exercício.
-- [ ] Registrar a versão do Medusa utilizada.
 - [ ] Executar e documentar a simulação controlada com Medusa.
 
 ## Reconhecimento do serviço
@@ -60,20 +60,40 @@ Foi utilizada a conta de laboratório `msfadmin`. O servidor respondeu com:
 
 **Resultado observado:** autenticação manual concluída com sucesso. Isso confirma que o serviço aceita a conta de teste utilizada. Esta etapa não representa, por si só, um ataque de força bruta.
 
+## Verificação do Medusa
+
+No Kali Linux, foram executados:
+
+```bash
+medusa -V
+medusa -d | grep -i ftp
+```
+
+**Resultado observado no terminal:**
+
+| Componente | Versão / resultado |
+|---|---|
+| Medusa | `v2.3` |
+| Módulo | `ftp.mod` |
+| Versão do módulo FTP | `2.1` |
+| Descrição | Módulo de força bruta para sessões FTP/FTPS |
+
+Isso confirma que o Medusa está instalado e que o módulo necessário para o cenário FTP está disponível.
+
 ## Próxima atividade
 
-- [ ] Verificar a instalação e o módulo FTP disponíveis na versão local do Medusa.
-- [ ] Preparar uma lista pequena de senhas fictícias e autorizadas para o teste.
-- [ ] Executar a simulação controlada com uma única conta de laboratório e baixa concorrência.
+- [ ] Consultar as opções específicas do módulo FTP com `medusa -M ftp -q`.
+- [ ] Preparar uma lista curta e artificial para uma conta de teste autorizada.
+- [ ] Executar a simulação controlada com uma única conta, um único host e baixa concorrência.
 - [ ] Registrar a saída real do Medusa e analisar o resultado.
 
 ## Procedimento com Medusa
 
-Os comandos e parâmetros efetivamente utilizados serão registrados após a execução. Não utilizar listas extensas ou credenciais de terceiros.
+Os comandos e parâmetros efetivamente utilizados serão registrados após a execução. O teste deve permanecer restrito à máquina local do laboratório, sem listas extensas ou credenciais de terceiros.
 
 ## Evidências
 
-As capturas do reconhecimento Nmap e da autenticação manual deverão ser adicionadas em `images/evidencias/` após a organização dos arquivos.
+As capturas do reconhecimento Nmap, da autenticação manual e da verificação do Medusa deverão ser adicionadas em `images/evidencias/` após a organização dos arquivos.
 
 ## Resultado observado
 
@@ -82,6 +102,8 @@ As capturas do reconhecimento Nmap e da autenticação manual deverão ser adici
 - Serviço: FTP (`vsftpd 2.3.4`)
 - Reconhecimento: porta `21/tcp` aberta
 - Autenticação manual: bem-sucedida com a conta de laboratório `msfadmin`
+- Medusa: versão `2.3`
+- Módulo FTP: `ftp.mod`, versão `2.1`
 - Teste automatizado com Medusa: ainda não executado
 
 ## Análise
