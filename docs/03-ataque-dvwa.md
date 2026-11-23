@@ -19,8 +19,8 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Acessar a seção **Brute Force**.
 - [x] Realizar uma tentativa manual com dados fictícios.
 - [x] Observar como os parâmetros do formulário aparecem na URL.
-- [ ] Confirmar e registrar o nível de segurança selecionado no DVWA.
-- [ ] Registrar a mensagem exibida pelo formulário após a tentativa.
+- [x] Registrar a mensagem exibida após a tentativa inválida.
+- [ ] Confirmar e registrar o nível de segurança selecionado na página DVWA Security.
 - [ ] Preparar e executar a atividade automatizada conforme o roteiro da aula, somente no DVWA local.
 - [ ] Registrar a ferramenta, os parâmetros e os resultados reais.
 
@@ -35,6 +35,14 @@ Após o envio, a barra de endereço do navegador apresentou parâmetros semelhan
 ```
 
 **Resultado observado:** os campos `username`, `password` e `Login` apareceram na query string da URL. Isso indica que os dados dessa submissão foram enviados em parâmetros de consulta (GET).
+
+A aplicação também apresentou a mensagem:
+
+```text
+Username and/or password incorrect.
+```
+
+A mensagem confirma que a tentativa manual com a senha fictícia incorreta foi rejeitada.
 
 ### Implicação de segurança
 
@@ -53,8 +61,8 @@ Os próximos passos e comandos serão documentados somente após a execução no
 ## Evidências
 
 - [ ] Captura da página Brute Force.
-- [ ] Captura da URL com os parâmetros, com valores de senha omitidos ou ocultados.
-- [ ] Captura do resultado da tentativa manual.
+- [ ] Captura da URL com os valores de senha omitidos ou ocultados.
+- [ ] Captura da mensagem de tentativa inválida.
 - [ ] Evidências do teste automatizado, quando realizado.
 
 Armazenar as imagens em `images/evidencias/`.
@@ -66,10 +74,10 @@ Armazenar as imagens em `images/evidencias/`.
 - Página: Brute Force.
 - Usuário de teste: `admin`.
 - Tentativa manual: realizada com senha fictícia incorreta.
-- Comportamento observado: parâmetros de usuário, senha e botão aparecem na URL.
+- Comportamento observado: parâmetros de usuário, senha e botão aparecem na URL (GET).
+- Resposta da aplicação: `Username and/or password incorrect.`
 - Teste automatizado: ainda não executado.
 
 ## Análise
 
-A observação inicial identificou exposição de parâmetros de autenticação na URL. Esse comportamento aumenta o risco de divulgação acidental de credenciais por meio de históricos e registros. Para aplicações reais, enviar credenciais no corpo de uma requisição POST, utilizar HTTPS, aplicar limitação de tentativas, monitorar eventos de autenticação e oferecer MFA são controles importantes. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
-
+A observação inicial identificou exposição de parâmetros de autenticação na URL. Esse comportamento aumenta o risco de divulgação acidental de credenciais por meio de históricos e registros. A mensagem de erro observada informa que a autenticação falhou, mas não revela qual campo estava incorreto. Para aplicações reais, enviar credenciais no corpo de uma requisição POST, utilizar HTTPS, aplicar limitação de tentativas, monitorar eventos de autenticação e oferecer MFA são controles importantes. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
