@@ -23,7 +23,7 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Identificar no Firefox os cookies de sessão necessários (os valores não são armazenados no repositório).
 - [x] Criar a wordlist `passwords-dvwa.txt`.
 - [x] Executar o módulo `web-form` com a opção `-P` e obter uma resposta `SUCCESS` do Medusa.
-- [ ] Validar manualmente a credencial reportada para descartar falso positivo.
+- [x] Validar manualmente a credencial reportada no formulário DVWA.
 
 ## Observação do formulário
 
@@ -116,9 +116,9 @@ ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: welcome1 [S
 
 O comando utilizou `-P` maiúsculo, que indica ao Medusa um arquivo de senhas. A saída reportou o candidato `welcome1` como sucesso para o usuário `admin`.
 
-### Validação necessária
+### Validação manual
 
-O resultado `SUCCESS` é a classificação feita pelo módulo com base na resposta HTTP e no texto configurado em `DENY-SIGNAL`. Antes de afirmar que a senha foi confirmada, é necessário realizar uma validação manual controlada no formulário do DVWA com a credencial reportada. Se a autenticação manual não for aceita, o resultado deverá ser tratado como falso positivo e os parâmetros de requisição/sinal de falha deverão ser revisados.
+Após a execução do Medusa, a credencial reportada (`admin` / `welcome1`) foi testada manualmente no formulário Brute Force do DVWA. **A autenticação foi aceita**, confirmando que o resultado `SUCCESS` correspondia a uma credencial válida neste laboratório.
 
 ## Resultado observado
 
@@ -133,11 +133,11 @@ O resultado `SUCCESS` é a classificação feita pelo módulo com base na respos
 - Módulo: `web-form`, versão `2.1`.
 - Wordlist: `passwords-dvwa.txt`, quatro candidatos.
 - Resultado informado pelo Medusa: `welcome1 [SUCCESS]`.
-- Validação manual da credencial reportada: pendente.
+- Validação manual da credencial reportada (`admin` / `welcome1`): bem-sucedida.
 
 ## Análise
 
-A tentativa manual identificou parâmetros de autenticação expostos na URL. A execução automatizada fez o módulo reportar `welcome1` como sucesso, mas a credencial ainda precisa ser validada manualmente. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
+A tentativa manual identificou parâmetros de autenticação expostos na URL. A execução automatizada fez o módulo reportar `welcome1` como sucesso, e a tentativa manual subsequente confirmou que a credencial funciona no formulário do DVWA. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
 
 ## Evidências
 
