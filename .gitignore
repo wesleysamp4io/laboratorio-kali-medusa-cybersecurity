@@ -1,0 +1,25 @@
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Saídas temporárias
+*.log
+*.tmp
+*.session
+/results/
+/tmp/
+
+# Arquivos locais de máquinas virtuais
+*.vdi
+*.vmdk
+*.vbox
+*.ova
+*.ovf
+
+# Cache de editores e sistemas
+.DS_Store
+Thumbs.db
+.vscode/
