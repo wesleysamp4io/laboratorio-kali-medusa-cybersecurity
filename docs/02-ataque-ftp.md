@@ -17,6 +17,7 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - [x] Confirmar que o serviço FTP está disponível no alvo.
 - [x] Validar uma autenticação manual de teste.
 - [x] Verificar a instalação do Medusa e o módulo FTP.
+- [x] Consultar as opções específicas do módulo FTP.
 - [ ] Preparar uma pequena wordlist exclusivamente para o exercício.
 - [ ] Executar e documentar a simulação controlada com Medusa.
 
@@ -80,9 +81,26 @@ medusa -d | grep -i ftp
 
 Isso confirma que o Medusa está instalado e que o módulo necessário para o cenário FTP está disponível.
 
+## Opções do módulo FTP
+
+Foi executado:
+
+```bash
+medusa -M ftp -q
+```
+
+O módulo informa três modos de conexão:
+
+| Modo | Descrição |
+|---|---|
+| `NORMAL` (padrão) | Comportamento FTP padrão; autenticação sem TLS, a menos que o servidor solicite criptografia |
+| `EXPLICIT` | Negocia TLS explícito por meio de `AUTH TLS` |
+| `IMPLICIT` | FTP sobre SSL/TLS implícito, geralmente associado à porta 990 |
+
+**Escolha para este laboratório:** manter o modo `NORMAL`, pois o reconhecimento identificou o FTP na porta padrão 21 e a conexão manual foi estabelecida sem negociação TLS. Não foi observado requisito de FTPS neste teste.
+
 ## Próxima atividade
 
-- [ ] Consultar as opções específicas do módulo FTP com `medusa -M ftp -q`.
 - [ ] Preparar uma lista curta e artificial para uma conta de teste autorizada.
 - [ ] Executar a simulação controlada com uma única conta, um único host e baixa concorrência.
 - [ ] Registrar a saída real do Medusa e analisar o resultado.
@@ -104,6 +122,8 @@ As capturas do reconhecimento Nmap, da autenticação manual e da verificação 
 - Autenticação manual: bem-sucedida com a conta de laboratório `msfadmin`
 - Medusa: versão `2.3`
 - Módulo FTP: `ftp.mod`, versão `2.1`
+- Opções do módulo consultadas: `NORMAL`, `EXPLICIT` e `IMPLICIT`
+- Modo planejado para o teste: `NORMAL`
 - Teste automatizado com Medusa: ainda não executado
 
 ## Análise
