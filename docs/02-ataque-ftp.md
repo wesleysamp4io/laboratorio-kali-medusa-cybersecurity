@@ -18,7 +18,7 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - [x] Validar uma autenticação manual de teste.
 - [x] Verificar a instalação do Medusa e o módulo FTP.
 - [x] Consultar as opções específicas do módulo FTP.
-- [ ] Preparar uma pequena wordlist exclusivamente para o exercício.
+- [x] Criar uma wordlist curta e artificial para o exercício.
 - [ ] Executar e documentar a simulação controlada com Medusa.
 
 ## Reconhecimento do serviço
@@ -76,7 +76,7 @@ medusa -d | grep -i ftp
 |---|---|
 | Medusa | `v2.3` |
 | Módulo | `ftp.mod` |
-| Versão do módulo FTP | `2.1` |
+| Versão do módulo | `2.1` |
 | Descrição | Módulo de força bruta para sessões FTP/FTPS |
 
 Isso confirma que o Medusa está instalado e que o módulo necessário para o cenário FTP está disponível.
@@ -99,9 +99,20 @@ O módulo informa três modos de conexão:
 
 **Escolha para este laboratório:** manter o modo `NORMAL`, pois o reconhecimento identificou o FTP na porta padrão 21 e a conexão manual foi estabelecida sem negociação TLS. Não foi observado requisito de FTPS neste teste.
 
+## Wordlist de laboratório
+
+Foi criada a lista `wordlists/ftp-lab.txt`, contendo quatro candidatos artificiais, um por linha:
+
+- `lab2026`
+- `kali2026`
+- `metasploitable`
+- `msfadmin`
+
+A lista é pequena e foi preparada exclusivamente para o teste no Metasploitable 2 local. O valor `msfadmin` foi incluído como candidato correspondente à senha padrão frequentemente utilizada nessa VM; confirme que ele corresponde à senha digitada na validação manual antes de iniciar o teste. Não reutilize os valores fora deste laboratório.
+
 ## Próxima atividade
 
-- [ ] Preparar uma lista curta e artificial para uma conta de teste autorizada.
+- [x] Preparar uma lista curta e artificial para a conta de teste.
 - [ ] Executar a simulação controlada com uma única conta, um único host e baixa concorrência.
 - [ ] Registrar a saída real do Medusa e analisar o resultado.
 
@@ -123,6 +134,7 @@ As capturas do reconhecimento Nmap, da autenticação manual e da verificação 
 - Medusa: versão `2.3`
 - Módulo FTP: `ftp.mod`, versão `2.1`
 - Opções do módulo consultadas: `NORMAL`, `EXPLICIT` e `IMPLICIT`
+- Wordlist: `wordlists/ftp-lab.txt`, quatro candidatos artificiais
 - Modo planejado para o teste: `NORMAL`
 - Teste automatizado com Medusa: ainda não executado
 
