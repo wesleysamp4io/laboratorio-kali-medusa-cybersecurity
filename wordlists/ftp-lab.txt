@@ -1,4 +1,0 @@
-lab2026
-kali2026
-metasploitable
-msfadmin
