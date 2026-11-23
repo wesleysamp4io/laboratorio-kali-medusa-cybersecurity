@@ -11,7 +11,7 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - Endereço utilizado: `http://192.168.100.10/dvwa/`.
 - Origem do acesso: Kali Linux (`192.168.100.20`).
 - Página testada: `/dvwa/vulnerabilities/brute/`.
-- Nível de segurança: ainda precisa ser confirmado na página DVWA Security.
+- Nível de segurança: `Low` (confirmado na página DVWA Security).
 
 ## Preparação
 
@@ -22,7 +22,7 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Registrar a mensagem exibida após a tentativa inválida.
 - [x] Confirmar que o Medusa possui o módulo `web-form` versão `2.1`.
 - [x] Consultar as opções do módulo `web-form`.
-- [ ] Identificar o cookie da sessão ativa do DVWA, sem publicá-lo no repositório.
+- [x] Identificar no Firefox os cookies de sessão `PHPSESSID` e `security` (os valores não são publicados nem compartilhados).
 - [ ] Executar a simulação automatizada, somente no DVWA local.
 - [ ] Registrar a ferramenta, os parâmetros e os resultados reais.
 
