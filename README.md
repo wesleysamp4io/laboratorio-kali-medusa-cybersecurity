@@ -42,7 +42,8 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 │   └── evidencias/
 ├── scripts/
 └── wordlists/
-    └── passwords-ftp.txt
+    ├── passwords-ftp.txt
+    └── passwords-dvwa.txt
 ```
 
 ## Andamento
@@ -52,11 +53,11 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 - [x] Configuração inicial da rede e endereços IP documentada.
 - [x] Reconhecimento do serviço FTP e validação manual de autenticação documentados.
 - [x] Simulação FTP executada com Medusa e resultado registrado.
-- [x] Cenário DVWA testado com Medusa e credencial validada manualmente.
+- [ ] Validar e corrigir o resultado do cenário DVWA: Medusa reportou `SUCCESS`, mas o login manual falhou.
 - [ ] Validar a persistência do IP do Metasploitable após reinicialização.
 - [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
 - [ ] Adicionar as capturas de tela em `images/evidencias/`.
-- [x] Executar e documentar o cenário web com DVWA.
+- [ ] Concluir e documentar o cenário web com DVWA após corrigir o falso positivo.
 - [ ] Executar e documentar o cenário SMB.
 - [ ] Revisar os resultados e as medidas de mitigação.
 
