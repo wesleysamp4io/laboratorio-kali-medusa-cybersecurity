@@ -9,14 +9,16 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - Alvo: máquina Metasploitable 2 do laboratório local.
 - Serviço: FTP.
 - Origem do teste: Kali Linux.
-- Os testes de autenticação serão limitados a contas e valores fictícios ou explicitamente autorizados para este laboratório.
+- Os testes automatizados serão restritos ao alvo local do laboratório e a uma conta de teste autorizada.
 
 ## Preparação
 
 - [x] Confirmar o endereço IP do alvo: `192.168.100.10`.
 - [x] Confirmar que o serviço FTP está disponível no alvo.
+- [x] Validar uma autenticação manual de teste.
 - [ ] Preparar uma pequena wordlist exclusivamente para o exercício.
 - [ ] Registrar a versão do Medusa utilizada.
+- [ ] Executar e documentar a simulação controlada com Medusa.
 
 ## Reconhecimento do serviço
 
@@ -40,26 +42,38 @@ sudo nmap -sV -p 21 192.168.100.10
 
 O Nmap também exibiu um aviso de que a resolução DNS reversa estava desabilitada. A varredura foi concluída e identificou a porta e o serviço FTP.
 
-**Interpretação:** o serviço FTP está acessível no alvo do laboratório. Esta etapa identificou o serviço e sua versão; ainda não houve tentativa de autenticação nem validação de credenciais.
+## Validação manual de autenticação
+
+Foi iniciada uma conexão FTP a partir do Kali:
+
+```bash
+ftp 192.168.100.10
+```
+
+Foi utilizada a conta de laboratório `msfadmin`. O servidor respondeu com:
+
+```text
+220 (vsFTPd 2.3.4)
+331 Please specify the password.
+230 Login successful.
+```
+
+**Resultado observado:** autenticação manual concluída com sucesso. Isso confirma que o serviço aceita a conta de teste utilizada. Esta etapa não representa, por si só, um ataque de força bruta.
 
 ## Próxima atividade
 
-- [ ] Confirmar o acesso ao serviço com um cliente FTP, sem realizar tentativas automatizadas.
-- [ ] Definir uma conta de teste autorizada e uma pequena lista artificial de senhas.
-- [ ] Executar a simulação controlada com Medusa conforme o escopo do laboratório.
-- [ ] Registrar os comandos, parâmetros e resultados reais.
+- [ ] Verificar a instalação e o módulo FTP disponíveis na versão local do Medusa.
+- [ ] Preparar uma lista pequena de senhas fictícias e autorizadas para o teste.
+- [ ] Executar a simulação controlada com uma única conta de laboratório e baixa concorrência.
+- [ ] Registrar a saída real do Medusa e analisar o resultado.
 
-## Procedimento
+## Procedimento com Medusa
 
-Documente aqui os comandos efetivamente utilizados, explicando os parâmetros e substituindo qualquer dado sensível por valores fictícios.
-
-```bash
-# Os comandos do teste com Medusa serão registrados após a execução.
-```
+Os comandos e parâmetros efetivamente utilizados serão registrados após a execução. Não utilizar listas extensas ou credenciais de terceiros.
 
 ## Evidências
 
-A captura do reconhecimento Nmap deverá ser adicionada em `images/evidencias/` e referenciada aqui após o upload.
+As capturas do reconhecimento Nmap e da autenticação manual deverão ser adicionadas em `images/evidencias/` após a organização dos arquivos.
 
 ## Resultado observado
 
@@ -67,8 +81,9 @@ A captura do reconhecimento Nmap deverá ser adicionada em `images/evidencias/` 
 - Alvo de laboratório: `192.168.100.10`
 - Serviço: FTP (`vsftpd 2.3.4`)
 - Reconhecimento: porta `21/tcp` aberta
-- Resultado de autenticação: ainda não executado
+- Autenticação manual: bem-sucedida com a conta de laboratório `msfadmin`
+- Teste automatizado com Medusa: ainda não executado
 
 ## Análise
 
-O reconhecimento confirmou que o FTP está exposto na máquina de laboratório. Serviços FTP tradicionais não protegem as credenciais em trânsito com criptografia; em ambientes reais, prefira SFTP ou FTPS, restrinja o acesso por rede e monitore tentativas de autenticação. As conclusões sobre autenticação deste laboratório serão preenchidas somente após a execução do teste.
+O reconhecimento confirmou que o FTP está exposto na máquina de laboratório e a autenticação manual confirmou que a conta de teste funciona. O FTP tradicional não protege credenciais em trânsito com criptografia; em ambientes reais, prefira SFTP ou FTPS, restrinja o acesso por rede e monitore tentativas de autenticação. As conclusões sobre a simulação automatizada serão preenchidas somente após o teste.
