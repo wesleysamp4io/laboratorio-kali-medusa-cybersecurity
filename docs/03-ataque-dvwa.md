@@ -23,7 +23,8 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Identificar no Firefox os cookies de sessão necessários (os valores não são armazenados no repositório).
 - [x] Criar a wordlist `passwords-dvwa.txt`.
 - [x] Executar o módulo `web-form` com a opção `-P` e obter uma resposta `SUCCESS` do Medusa.
-- [x] Validar manualmente a credencial reportada no formulário DVWA.
+- [x] Realizar a validação manual da credencial reportada.
+- [x] Identificar divergência: o login manual com `admin` / `welcome1` falhou, portanto o `SUCCESS` do Medusa não foi confirmado.
 
 ## Observação do formulário
 
@@ -133,11 +134,12 @@ Após a execução do Medusa, a credencial reportada (`admin` / `welcome1`) foi 
 - Módulo: `web-form`, versão `2.1`.
 - Wordlist: `passwords-dvwa.txt`, quatro candidatos.
 - Resultado informado pelo Medusa: `welcome1 [SUCCESS]`.
-- Validação manual da credencial reportada (`admin` / `welcome1`): bem-sucedida.
+- Validação manual da credencial reportada (`admin` / `welcome1`): falhou.
+- Interpretação: `SUCCESS` do Medusa não confirmado; provável falso positivo.
 
 ## Análise
 
-A tentativa manual identificou parâmetros de autenticação expostos na URL. A execução automatizada fez o módulo reportar `welcome1` como sucesso, e a tentativa manual subsequente confirmou que a credencial funciona no formulário do DVWA. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
+A tentativa manual identificou parâmetros de autenticação expostos na URL. A execução automatizada fez o módulo reportar `welcome1` como sucesso, mas a tentativa manual subsequente falhou. O resultado automatizado deve ser tratado como provável falso positivo até que o envio do formulário, a sessão e o texto de falha sejam validados. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
 
 ## Evidências
 
