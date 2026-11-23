@@ -93,6 +93,12 @@ Foi criada no Kali a lista `passwords-dvwa.txt`, contendo quatro candidatos de t
 
 A lista foi criada para o exercício no DVWA local. Não reutilizar seus valores fora deste laboratório.
 
+### Investigação do falso positivo
+
+A revisão do código-fonte do módulo `web-form` mostrou que ele próprio acrescenta uma barra inicial ao caminho ao montar a requisição HTTP (`GET /%s`). Por isso, o valor de `FORM` deve ser informado sem barra inicial. A configuração anterior usava `/dvwa/vulnerabilities/brute/`, o que pode ter produzido um caminho com duas barras (`//dvwa/vulnerabilities/brute/`) e uma resposta diferente da página esperada. O exemplo de uso do módulo também apresenta o caminho sem a barra inicial. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
+
+**Ajuste a validar:** usar `FORM:dvwa/vulnerabilities/brute/` (sem a primeira barra). Ainda é necessário repetir o teste e confirmar a resposta antes de considerar o resultado válido.
+
 ## Execução com Medusa
 
 Foi executado no Kali o comando abaixo. O cookie foi mantido em variável local e não é reproduzido neste documento:
@@ -102,7 +108,7 @@ medusa -h 192.168.100.10 \
 -u admin \
 -P passwords-dvwa.txt \
 -M web-form \
--m FORM:/dvwa/vulnerabilities/brute/ \
+-m FORM:dvwa/vulnerabilities/brute/ \
 -m FORM-DATA:"get?username=&password=&Login=Login" \
 -m DENY-SIGNAL:"Username and/or password incorrect." \
 -m CUSTOM-HEADER:"cookie: PHPSESSID=${PHPSESSID}; security=low" \
