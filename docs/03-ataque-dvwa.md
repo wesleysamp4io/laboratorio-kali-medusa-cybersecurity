@@ -15,64 +15,59 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 
 ## Preparação
 
-- [x] Confirmar que a página de login do DVWA está acessível no laboratório.
-- [x] Acessar a seção **Brute Force**.
-- [x] Realizar uma tentativa manual com dados fictícios.
-- [x] Observar como os parâmetros do formulário aparecem na URL.
-- [x] Registrar a mensagem exibida após a tentativa inválida.
-- [x] Confirmar que o Medusa possui o módulo `web-form` versão `2.1`.
-- [x] Consultar as opções do módulo `web-form`.
-- [x] Identificar no Firefox os cookies de sessão `PHPSESSID` e `security` (os valores não são publicados nem compartilhados).
-- [x] Realizar uma primeira execução experimental do módulo `web-form` no DVWA local.
-- [ ] Corrigir e validar a interpretação do resultado antes de considerar o teste concluído.
+- [x] Confirmar que a página Brute Force do DVWA está acessível no laboratório.
+- [x] Realizar uma tentativa manual com senha fictícia incorreta.
+- [x] Observar os parâmetros do formulário na URL.
+- [x] Registrar a mensagem de falha apresentada pelo formulário.
+- [x] Confirmar a disponibilidade do módulo Medusa `web-form` versão `2.1`.
+- [x] Identificar no Firefox os cookies de sessão necessários (os valores não são armazenados no repositório).
+- [x] Criar a wordlist `passwords-dvwa.txt`.
+- [x] Executar o módulo `web-form` com a opção `-P` e obter uma resposta `SUCCESS` do Medusa.
+- [ ] Validar manualmente a credencial reportada para descartar falso positivo.
 
 ## Observação do formulário
 
 Foi realizada uma tentativa manual utilizando o usuário de laboratório `admin` e uma senha fictícia incorreta.
 
-Após o envio, a barra de endereço do navegador apresentou parâmetros semelhantes a:
+A barra de endereço apresentou parâmetros semelhantes a:
 
 ```text
 /dvwa/vulnerabilities/brute/?username=admin&password=[valor-ficticio]&Login=Login
 ```
 
-**Resultado observado:** os campos `username`, `password` e `Login` apareceram na query string da URL. Isso indica que os dados dessa submissão foram enviados em parâmetros de consulta (GET).
+**Resultado observado:** os campos `username`, `password` e `Login` apareceram na query string da URL, indicando envio por GET.
 
-A aplicação também apresentou a mensagem:
+A aplicação apresentou a mensagem:
 
 ```text
 Username and/or password incorrect.
 ```
 
-A mensagem confirma que a tentativa manual com a senha fictícia incorreta foi rejeitada.
-
 ### Implicação de segurança
 
-Quando credenciais são transmitidas na URL, podem acabar expostas no histórico do navegador, em logs de servidores, em ferramentas de monitoramento e em outros registros que armazenem a URL. Aplicações reais não devem enviar senhas dessa forma. O uso de HTTPS é necessário para proteger o tráfego em trânsito, mas não elimina a exposição causada por colocar a senha na própria URL.
+Quando credenciais são transmitidas na URL, podem acabar expostas no histórico do navegador, em logs de servidores, em ferramentas de monitoramento e em outros registros que armazenem a URL. Aplicações reais não devem enviar senhas dessa forma. HTTPS protege o tráfego em trânsito, mas não elimina a exposição causada por colocar a senha na própria URL.
 
 > Não registre cookies de sessão nem senhas reais em capturas ou arquivos do repositório.
 
 ## Verificação do Medusa
 
-No Kali Linux, foi executado:
+Foi executado:
 
 ```bash
 medusa -M web-form -q
 ```
 
-**Resultado observado:** o Medusa exibiu o módulo `web-form.mod`, versão `2.1`, destinado a formulários web.
+**Resultado observado:** Medusa versão `2.3`, módulo `web-form.mod`, versão `2.1`.
 
-As opções consultadas incluem:
+Opções identificadas:
 
 - `FORM`: caminho do formulário.
 - `FORM-DATA`: método HTTP e campos enviados.
 - `DENY-SIGNAL`: texto que indica falha de autenticação.
-- `CUSTOM-HEADER`: cabeçalhos HTTP adicionais, necessários neste laboratório para enviar o cookie da sessão do DVWA.
+- `CUSTOM-HEADER`: cabeçalho HTTP adicional utilizado para enviar os cookies da sessão.
 - `USER-AGENT`: identificação do navegador na requisição.
 
 ## Parâmetros identificados no formulário
-
-Com base na URL observada durante a tentativa manual, o formulário utiliza:
 
 | Opção | Valor observado |
 |---|---|
@@ -82,50 +77,68 @@ Com base na URL observada durante a tentativa manual, o formulário utiliza:
 | Campo de senha | `password` |
 | Campo adicional | `Login=Login` |
 | Mensagem de falha | `Username and/or password incorrect.` |
+| Nível de segurança | `Low` |
 
-A sessão autenticada do navegador é mantida por cookies. Para reproduzir a requisição no laboratório, será necessário consultar no Firefox os cookies ativos do endereço `192.168.100.10` e utilizá-los localmente como cabeçalho HTTP. **O valor do cookie é um segredo de sessão: não o compartilhe e não o adicione ao GitHub.**
+A sessão autenticada do navegador é mantida por cookies. Os valores de `PHPSESSID` e `security` foram utilizados localmente no terminal e não devem ser publicados ou compartilhados.
 
-## Primeira execução experimental
+## Wordlist
 
-Foi feita uma tentativa inicial com o módulo `web-form`, utilizando o host local, o usuário `admin`, a wordlist `passwords-dvwa.txt`, o caminho do formulário Brute Force, o método GET, a mensagem de falha observada e o cookie de sessão do DVWA.
+Foi criada no Kali a lista `passwords-dvwa.txt`, contendo quatro candidatos de teste:
 
-A saída exibida pelo terminal foi:
+- `welcome1`
+- `admin123`
+- `letmein`
+- `password`
 
-```text
-ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: passwords-dvwa.txt [SUCCESS]
+A lista foi criada para o exercício no DVWA local. Não reutilizar seus valores fora deste laboratório.
+
+## Execução com Medusa
+
+Foi executado no Kali o comando abaixo. O cookie foi mantido em variável local e não é reproduzido neste documento:
+
+```bash
+medusa -h 192.168.100.10 \
+-u admin \
+-P passwords-dvwa.txt \
+-M web-form \
+-m FORM:/dvwa/vulnerabilities/brute/ \
+-m FORM-DATA:"get?username=&password=&Login=Login" \
+-m DENY-SIGNAL:"Username and/or password incorrect." \
+-m CUSTOM-HEADER:"cookie: PHPSESSID=${PHPSESSID}; security=low" \
+-t 1 -f -v 4
 ```
 
-**Causa identificada:** na execução, foi utilizado `-p` minúsculo. No Medusa, `-p` recebe uma senha literal; para ler uma lista de senhas, a opção correta é `-P` maiúsculo. Por isso, o programa interpretou `passwords-dvwa.txt` como a própria senha, em vez de abrir o arquivo. A saída é inconclusiva e não comprova autenticação bem-sucedida. A referência do manual do Medusa confirma essa diferença. (https://manpages.ubuntu.com/manpages/resolute/man1/medusa.1.html) Além disso, o módulo `web-form` classifica uma tentativa como sucesso quando a mensagem definida em `DENY-SIGNAL` não aparece na resposta HTTP; uma resposta inesperada, sessão inválida ou sinal de falha incorreto pode causar falso positivo. A documentação do código do módulo descreve esse critério de classificação. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
+**Saída observada no terminal:**
 
-Portanto, nenhuma credencial válida foi confirmada por esta primeira execução. A sintaxe e o conteúdo da lista precisam ser conferidos antes de repetir o teste, mantendo a execução restrita ao DVWA local.
+```text
+ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: welcome1 [SUCCESS]
+```
 
-## Procedimento
+O comando utilizou `-P` maiúsculo, que indica ao Medusa um arquivo de senhas. A saída reportou o candidato `welcome1` como sucesso para o usuário `admin`.
 
-A execução experimental foi registrada, mas a validação automatizada ainda não foi concluída. O procedimento corrigido, os parâmetros efetivos e qualquer resultado confirmado serão documentados após a conferência.
+### Validação necessária
 
-## Evidências
-
-- [ ] Captura da página Brute Force.
-- [ ] Captura da URL com os valores de senha omitidos ou ocultados.
-- [ ] Captura da mensagem de tentativa inválida.
-- [ ] Evidência da disponibilidade do módulo `web-form`.
-- [ ] Evidência do teste automatizado, quando realizado, sem expor cookies ou credenciais.
-
-Armazenar as imagens em `images/evidencias/`.
+O resultado `SUCCESS` é a classificação feita pelo módulo com base na resposta HTTP e no texto configurado em `DENY-SIGNAL`. Antes de afirmar que a senha foi confirmada, é necessário realizar uma validação manual controlada no formulário do DVWA com a credencial reportada. Se a autenticação manual não for aceita, o resultado deverá ser tratado como falso positivo e os parâmetros de requisição/sinal de falha deverão ser revisados.
 
 ## Resultado observado
 
 - Data: 23/11/2026
 - Aplicação: DVWA no Metasploitable 2.
+- Origem: Kali Linux (`192.168.100.20`).
+- Alvo: `192.168.100.10`.
 - Página: Brute Force.
-- Usuário de teste: `admin`.
-- Tentativa manual: realizada com senha fictícia incorreta.
-- Comportamento observado: parâmetros de usuário, senha e botão aparecem na URL (GET).
-- Resposta da aplicação: `Username and/or password incorrect.`
+- Nível: `Low`.
+- Usuário utilizado: `admin`.
 - Medusa: versão `2.3`.
-- Módulo web: `web-form.mod`, versão `2.1`.
-- Primeira execução do Medusa: retornou `ACCOUNT FOUND`, mas reportou `passwords-dvwa.txt` como senha; resultado inconclusivo e não validado.
+- Módulo: `web-form`, versão `2.1`.
+- Wordlist: `passwords-dvwa.txt`, quatro candidatos.
+- Resultado informado pelo Medusa: `welcome1 [SUCCESS]`.
+- Validação manual da credencial reportada: pendente.
 
 ## Análise
 
-A observação inicial identificou exposição de parâmetros de autenticação na URL. Esse comportamento aumenta o risco de divulgação acidental de credenciais por meio de históricos e registros. A mensagem de erro observada informa que a autenticação falhou, mas não revela qual campo estava incorreto. Para aplicações reais, enviar credenciais no corpo de uma requisição POST, utilizar HTTPS, aplicar limitação de tentativas, monitorar eventos de autenticação e oferecer MFA são controles importantes. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
+A tentativa manual identificou parâmetros de autenticação expostos na URL. A execução automatizada fez o módulo reportar `welcome1` como sucesso, mas a credencial ainda precisa ser validada manualmente. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA. O envio por POST, isoladamente, não substitui HTTPS nem os demais controles.
+
+## Evidências
+
+A captura da execução do Medusa deverá ser adicionada à pasta `images/evidencias/`, ocultando qualquer valor de cookie ou dado de sessão.
