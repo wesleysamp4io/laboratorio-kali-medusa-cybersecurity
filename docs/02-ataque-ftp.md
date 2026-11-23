@@ -9,7 +9,7 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - Alvo: máquina Metasploitable 2 do laboratório local.
 - Serviço: FTP.
 - Origem do teste: Kali Linux.
-- Os testes automatizados serão restritos ao alvo local do laboratório e a uma conta de teste autorizada.
+- Os testes automatizados foram restritos ao host local do laboratório e à conta de teste usada na atividade.
 
 ## Preparação
 
@@ -19,7 +19,8 @@ Registrar o cenário de auditoria de autenticação FTP realizado no ambiente vu
 - [x] Verificar a instalação do Medusa e o módulo FTP.
 - [x] Consultar as opções específicas do módulo FTP.
 - [x] Criar uma wordlist curta e artificial para o exercício.
-- [ ] Executar e documentar a simulação controlada com Medusa.
+- [x] Executar a simulação controlada com Medusa.
+- [x] Registrar a saída observada no terminal.
 
 ## Reconhecimento do serviço
 
@@ -59,7 +60,7 @@ Foi utilizada a conta de laboratório `msfadmin`. O servidor respondeu com:
 230 Login successful.
 ```
 
-**Resultado observado:** autenticação manual concluída com sucesso. Isso confirma que o serviço aceita a conta de teste utilizada. Esta etapa não representa, por si só, um ataque de força bruta.
+**Resultado observado:** autenticação manual concluída com sucesso. Isso confirmou que o serviço aceita a conta de teste utilizada. Esta etapa, isoladamente, não representa um teste automatizado de força bruta.
 
 ## Verificação do Medusa
 
@@ -79,7 +80,7 @@ medusa -d | grep -i ftp
 | Versão do módulo | `2.1` |
 | Descrição | Módulo de força bruta para sessões FTP/FTPS |
 
-Isso confirma que o Medusa está instalado e que o módulo necessário para o cenário FTP está disponível.
+Isso confirmou que o Medusa estava instalado e que o módulo necessário para o cenário FTP estava disponível.
 
 ## Opções do módulo FTP
 
@@ -97,47 +98,66 @@ O módulo informa três modos de conexão:
 | `EXPLICIT` | Negocia TLS explícito por meio de `AUTH TLS` |
 | `IMPLICIT` | FTP sobre SSL/TLS implícito, geralmente associado à porta 990 |
 
-**Escolha para este laboratório:** manter o modo `NORMAL`, pois o reconhecimento identificou o FTP na porta padrão 21 e a conexão manual foi estabelecida sem negociação TLS. Não foi observado requisito de FTPS neste teste.
+**Escolha para este laboratório:** foi utilizado o modo padrão `NORMAL`, pois o reconhecimento identificou o FTP na porta 21 e a conexão manual foi estabelecida sem negociação TLS.
 
 ## Wordlist de laboratório
 
-Foi criada a lista `wordlists/ftp-lab.txt`, contendo quatro candidatos artificiais, um por linha:
+Foi criada a lista local `passwords-ftp.txt` e ela também foi publicada no repositório como [`wordlists/passwords-ftp.txt`](../wordlists/passwords-ftp.txt). A lista contém quatro candidatos artificiais, um por linha:
 
 - `lab2026`
 - `kali2026`
 - `metasploitable`
 - `msfadmin`
 
-A lista é pequena e foi preparada exclusivamente para o teste no Metasploitable 2 local. O valor `msfadmin` foi incluído como candidato correspondente à senha padrão frequentemente utilizada nessa VM; confirme que ele corresponde à senha digitada na validação manual antes de iniciar o teste. Não reutilize os valores fora deste laboratório.
+A lista foi preparada exclusivamente para o teste no Metasploitable 2 local. Não deve ser reutilizada fora deste laboratório.
 
-## Próxima atividade
+## Execução com Medusa
 
-- [x] Preparar uma lista curta e artificial para a conta de teste.
-- [ ] Executar a simulação controlada com uma única conta, um único host e baixa concorrência.
-- [ ] Registrar a saída real do Medusa e analisar o resultado.
+No Kali Linux, foi executado o seguinte comando:
 
-## Procedimento com Medusa
+```bash
+medusa -h 192.168.100.10 -u msfadmin -P passwords-ftp.txt -M ftp -t 1 -f -v 4
+```
 
-Os comandos e parâmetros efetivamente utilizados serão registrados após a execução. O teste deve permanecer restrito à máquina local do laboratório, sem listas extensas ou credenciais de terceiros.
+**Parâmetros utilizados:**
 
-## Evidências
+| Parâmetro | Finalidade |
+|---|---|
+| `-h 192.168.100.10` | Define o host do laboratório |
+| `-u msfadmin` | Define a única conta de teste utilizada |
+| `-P passwords-ftp.txt` | Informa a lista local de senhas |
+| `-M ftp` | Seleciona o módulo FTP |
+| `-t 1` | Limita a uma tarefa concorrente |
+| `-f` | Interrompe a execução após encontrar uma combinação válida |
+| `-v 4` | Define o nível de detalhes da saída |
 
-As capturas do reconhecimento Nmap, da autenticação manual e da verificação do Medusa deverão ser adicionadas em `images/evidencias/` após a organização dos arquivos.
+**Saída observada no terminal:**
+
+```text
+ACCOUNT FOUND: [ftp] Host: 192.168.100.10 User: msfadmin Password: msfadmin [SUCCESS]
+```
+
+**Resultado:** o Medusa encontrou uma combinação válida para a conta de teste `msfadmin` no serviço FTP do Metasploitable 2. A saída identificou o host, o usuário, a senha correspondente e o estado `SUCCESS`.
+
+O teste foi executado contra uma única máquina de laboratório, com uma única conta e uma lista curta criada para esta atividade.
 
 ## Resultado observado
 
 - Data: 23/11/2026
-- Alvo de laboratório: `192.168.100.10`
+- Origem: Kali Linux (`192.168.100.20`)
+- Alvo: Metasploitable 2 (`192.168.100.10`)
 - Serviço: FTP (`vsftpd 2.3.4`)
-- Reconhecimento: porta `21/tcp` aberta
-- Autenticação manual: bem-sucedida com a conta de laboratório `msfadmin`
+- Porta: `21/tcp` aberta
+- Usuário testado: `msfadmin`
 - Medusa: versão `2.3`
 - Módulo FTP: `ftp.mod`, versão `2.1`
-- Opções do módulo consultadas: `NORMAL`, `EXPLICIT` e `IMPLICIT`
-- Wordlist: `wordlists/ftp-lab.txt`, quatro candidatos artificiais
-- Modo planejado para o teste: `NORMAL`
-- Teste automatizado com Medusa: ainda não executado
+- Wordlist local: `passwords-ftp.txt`, quatro candidatos
+- Resultado automatizado: combinação válida encontrada (`SUCCESS`)
 
 ## Análise
 
-O reconhecimento confirmou que o FTP está exposto na máquina de laboratório e a autenticação manual confirmou que a conta de teste funciona. O FTP tradicional não protege credenciais em trânsito com criptografia; em ambientes reais, prefira SFTP ou FTPS, restrinja o acesso por rede e monitore tentativas de autenticação. As conclusões sobre a simulação automatizada serão preenchidas somente após o teste.
+O exercício demonstrou que uma senha fraca ou previsível pode ser descoberta por tentativas automatizadas quando o serviço permite tentativas repetidas sem controles suficientes. Em ambientes reais, recomenda-se utilizar senhas fortes e únicas, limitar e monitorar tentativas de autenticação, restringir o acesso ao serviço e preferir protocolos seguros, como SFTP ou FTPS, em vez de FTP sem criptografia.
+
+## Evidências
+
+A captura de tela da execução do Medusa foi registrada durante a atividade. Ela ainda deverá ser adicionada manualmente à pasta `images/evidencias/` para acompanhar este relatório.
