@@ -97,11 +97,11 @@ A lista foi criada para o exercício no DVWA local. Não reutilizar seus valores
 
 A revisão do código-fonte do módulo `web-form` mostrou que ele próprio acrescenta uma barra inicial ao caminho ao montar a requisição HTTP (`GET /%s`). Por isso, o valor de `FORM` deve ser informado sem barra inicial. A configuração anterior usava `/dvwa/vulnerabilities/brute/`, o que pode ter produzido um caminho com duas barras (`//dvwa/vulnerabilities/brute/`) e uma resposta diferente da página esperada. O exemplo de uso do módulo também apresenta o caminho sem a barra inicial. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
 
-**Ajuste a validar:** usar `FORM:dvwa/vulnerabilities/brute/` (sem a primeira barra). Ainda é necessário repetir o teste e confirmar a resposta antes de considerar o resultado válido.
+**Ajuste pendente:** na próxima execução, usar `FORM:dvwa/vulnerabilities/brute/` (sem a primeira barra). O valor anterior gerava potencialmente o caminho `//dvwa/...`; o código do módulo monta o caminho como `GET /%s`, adicionando sua própria barra inicial. Ainda é necessário repetir o teste com uma sessão válida e confirmar a resposta antes de considerar o resultado válido.
 
-## Execução com Medusa
+## Execução inicial com Medusa
 
-Foi executado no Kali o comando abaixo. O cookie foi mantido em variável local e não é reproduzido neste documento:
+Foi executado no Kali o comando abaixo. O cookie foi mantido em variável local e não é reproduzido neste documento. Nesta primeira execução, o parâmetro `FORM` foi informado com uma barra inicial:
 
 ```bash
 medusa -h 192.168.100.10 \
