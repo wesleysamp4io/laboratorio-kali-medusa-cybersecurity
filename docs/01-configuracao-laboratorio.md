@@ -31,13 +31,22 @@ As duas máquinas virtuais estão conectadas ao **Adaptador 1** do VirtualBox, c
 
 ## Configuração de endereços IP
 
-Durante a verificação, a interface `eth0` do Metasploitable estava sem endereço IPv4. O endereço foi aplicado manualmente para recuperar a comunicação:
+O Kali utiliza o endereço `192.168.100.20/24`. No Metasploitable 2, a interface `eth0` estava configurada para DHCP e ficou sem endereço IPv4 neste laboratório. Foi aplicada uma configuração estática no arquivo `/etc/network/interfaces`:
 
-```bash
-sudo ifconfig eth0 192.168.100.10 netmask 255.255.255.0 up
+```text
+auto eth0
+iface eth0 inet static
+    address 192.168.100.10
+    netmask 255.255.255.0
 ```
 
-**Atenção:** essa configuração feita com `ifconfig` é temporária e pode ser perdida após reiniciar a máquina. A persistência do endereço ainda precisa ser configurada e validada.
+A configuração foi aplicada com:
+
+```bash
+sudo ifup eth0
+```
+
+O endereço voltou a aparecer na interface. **A persistência após reinicialização ainda precisa ser validada.**
 
 O Kali foi observado com a rota conectada:
 
@@ -53,26 +62,28 @@ A partir do Kali Linux (`192.168.100.20`), foi executado:
 ping -c 4 192.168.100.10
 ```
 
-**Resultado observado:**
+**Resultado observado anteriormente, após a recuperação do IP:**
 - Pacotes transmitidos: 4
 - Pacotes recebidos: 4
 - Perda: 0%
-- Estado: comunicação entre Kali e Metasploitable validada neste teste.
+- Estado: comunicação entre Kali e Metasploitable validada nesse teste. O teste deverá ser repetido após a aplicação da configuração estática.
 
 ## Checklist de configuração
 
 - [x] Adaptadores das duas VMs conectados à Rede Interna `lab-int`.
 - [x] Cabo virtual conectado nas duas VMs.
 - [x] Endereços IPv4 identificados.
-- [x] Comunicação entre as máquinas validada com ping.
-- [ ] Configurar o IP do Metasploitable de forma persistente.
+- [x] Configuração estática registrada no Metasploitable.
+- [x] Comunicação entre as máquinas validada com ping antes da configuração estática.
+- [ ] Repetir o ping após a configuração estática.
+- [ ] Reiniciar o Metasploitable e confirmar a persistência do IP.
 - [ ] Confirmar se a modalidade Rede Interna atende à exigência do instrutor ou se é necessário utilizar Host-only.
 - [ ] Verificar e documentar o isolamento da rede externa.
 - [ ] Adicionar capturas de tela em `images/evidencias/`.
 
 ## Evidências
 
-As capturas de tela das configurações e do teste de conectividade ainda serão organizadas na pasta `images/evidencias/`.
+As capturas de tela das configurações e dos testes serão organizadas na pasta `images/evidencias/`.
 
 ## Observações
 
