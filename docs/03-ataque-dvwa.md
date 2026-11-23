@@ -23,8 +23,8 @@ Documentar a análise do formulário de autenticação Brute Force do Damn Vulne
 - [x] Confirmar que o Medusa possui o módulo `web-form` versão `2.1`.
 - [x] Consultar as opções do módulo `web-form`.
 - [x] Identificar no Firefox os cookies de sessão `PHPSESSID` e `security` (os valores não são publicados nem compartilhados).
-- [ ] Executar a simulação automatizada, somente no DVWA local.
-- [ ] Registrar a ferramenta, os parâmetros e os resultados reais.
+- [x] Realizar uma primeira execução experimental do módulo `web-form` no DVWA local.
+- [ ] Corrigir e validar a interpretação do resultado antes de considerar o teste concluído.
 
 ## Observação do formulário
 
@@ -85,9 +85,23 @@ Com base na URL observada durante a tentativa manual, o formulário utiliza:
 
 A sessão autenticada do navegador é mantida por cookies. Para reproduzir a requisição no laboratório, será necessário consultar no Firefox os cookies ativos do endereço `192.168.100.10` e utilizá-los localmente como cabeçalho HTTP. **O valor do cookie é um segredo de sessão: não o compartilhe e não o adicione ao GitHub.**
 
+## Primeira execução experimental
+
+Foi feita uma tentativa inicial com o módulo `web-form`, utilizando o host local, o usuário `admin`, a wordlist `passwords-dvwa.txt`, o caminho do formulário Brute Force, o método GET, a mensagem de falha observada e o cookie de sessão do DVWA.
+
+A saída exibida pelo terminal foi:
+
+```text
+ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: passwords-dvwa.txt [SUCCESS]
+```
+
+**Interpretação:** este resultado é inconclusivo e não deve ser tratado como autenticação bem-sucedida. O campo de senha apresenta o nome do arquivo da wordlist (`passwords-dvwa.txt`), e não um dos valores que deveriam estar na lista. Além disso, o módulo `web-form` classifica uma tentativa como sucesso quando a mensagem definida em `DENY-SIGNAL` não aparece na resposta HTTP; uma resposta inesperada, sessão inválida ou sinal de falha incorreto pode causar falso positivo. A documentação do código do módulo descreve esse critério de classificação. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
+
+Portanto, nenhuma credencial válida foi confirmada por esta primeira execução. A sintaxe e o conteúdo da lista precisam ser conferidos antes de repetir o teste, mantendo a execução restrita ao DVWA local.
+
 ## Procedimento
 
-A automação ainda não foi executada. O comando, os parâmetros efetivos e o resultado serão registrados depois da execução e validação no DVWA local.
+A execução experimental foi registrada, mas a validação automatizada ainda não foi concluída. O procedimento corrigido, os parâmetros efetivos e qualquer resultado confirmado serão documentados após a conferência.
 
 ## Evidências
 
@@ -110,7 +124,7 @@ Armazenar as imagens em `images/evidencias/`.
 - Resposta da aplicação: `Username and/or password incorrect.`
 - Medusa: versão `2.3`.
 - Módulo web: `web-form.mod`, versão `2.1`.
-- Teste automatizado: ainda não executado.
+- Primeira execução do Medusa: retornou `ACCOUNT FOUND`, mas reportou `passwords-dvwa.txt` como senha; resultado inconclusivo e não validado.
 
 ## Análise
 
