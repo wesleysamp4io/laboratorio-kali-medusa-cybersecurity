@@ -18,6 +18,10 @@ O arquivo [`passwords-dvwa.txt`](passwords-dvwa.txt) contém os quatro candidato
 - No teste corrigido, o Medusa encontrou `password` para `admin`, e o login foi confirmado manualmente no DVWA.
 - Não reutilize esses valores fora deste exercício.
 
+## SMB
+
+O arquivo [`users-smb.txt`](users-smb.txt) contém três nomes de contas que apareceram na enumeração do Metasploitable 2: `msfadmin`, `user` e `root`. A presença de um nome na enumeração não garante que a conta aceite autenticação SMB.
+
 ## Boas práticas
 
 - Não armazene senhas pessoais, credenciais corporativas ou dados vazados.
