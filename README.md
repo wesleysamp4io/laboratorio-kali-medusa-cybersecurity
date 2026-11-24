@@ -2,30 +2,23 @@
 
 > Projeto prático de cibersegurança desenvolvido como desafio educacional da DIO.
 
-Laboratório prático de cibersegurança utilizando Kali Linux e Medusa para simulação de ataques de força bruta e Password Spraying em ambientes controlados. Inclui testes em FTP, DVWA e SMB, documentação técnica, evidências, análise de vulnerabilidades e medidas de mitigação.
+Laboratório de cibersegurança com Kali Linux, Medusa e máquinas vulneráveis em ambiente virtual isolado. O projeto documenta três cenários: autenticação FTP, formulário web DVWA e enumeração/Password Spraying em SMB.
 
 ## Objetivo
 
-Configurar um ambiente de testes isolado, executar simulações controladas de autenticação em serviços vulneráveis e documentar os resultados para compreender os riscos de senhas fracas e as medidas de proteção.
+Preparar um ambiente controlado, executar simulações de auditoria de autenticação e documentar os resultados, os riscos observados e as medidas de mitigação.
 
-## Escopo do desafio
+## Ambiente
 
-- **FTP:** simulação controlada de tentativas de autenticação.
-- **Web (DVWA):** automação de tentativas em formulário de autenticação.
-- **SMB:** estudo de enumeração de usuários e Password Spraying.
-- **Documentação:** registro das configurações, wordlists de teste, comandos, evidências, resultados e recomendações de mitigação.
-
-## Ambiente de laboratório
-
-| Componente | Finalidade |
+| Componente | Função |
 |---|---|
-| Kali Linux | Máquina utilizada para os testes de auditoria (`192.168.100.20`) |
-| Metasploitable 2 | Máquina vulnerável para práticas em laboratório (`192.168.100.10`) |
-| DVWA | Aplicação web intencionalmente vulnerável para o cenário web |
-| Oracle VirtualBox | Virtualização das máquinas |
-| Rede Interna | Rede interna do VirtualBox chamada `lab-int` |
+| Kali Linux (`192.168.100.20`) | Estação de auditoria |
+| Metasploitable 2 (`192.168.100.10`) | Máquina vulnerável de laboratório |
+| DVWA | Aplicação web vulnerável hospedada no Metasploitable 2 |
+| Oracle VirtualBox | Virtualização |
+| Rede `lab-int` | Rede Interna do VirtualBox |
 
-> A configuração observada utiliza **Rede Interna (Internal Network)** do VirtualBox, não o modo **Host-only Adapter**. Os detalhes e as pendências de validação estão em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md).
+> **Nota de topologia:** as VMs estão ligadas à opção **Rede Interna (Internal Network)** do VirtualBox, com o nome `lab-int`. O texto do desafio também menciona Host-only; são modos diferentes. A configuração aplicada está descrita em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md) e deve ser comparada com a orientação específica do instrutor.
 
 ## Estrutura do repositório
 
@@ -38,105 +31,35 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 │   ├── 03-ataque-dvwa.md
 │   ├── 04-password-spraying-smb.md
 │   └── 05-mitigacoes.md
-├── images/
-│   └── evidencias/
 ├── scripts/
+│   └── README.md
 └── wordlists/
+    ├── README.md
     ├── passwords-ftp.txt
-    └── passwords-dvwa.txt
+    ├── passwords-dvwa.txt
+    └── users-smb.txt
 ```
 
-## Andamento
+## Cenários documentados
 
-- [x] Repositório público criado.
-- [x] Estrutura inicial de documentação criada.
-- [x] Configuração inicial da rede e endereços IP documentada.
-- [x] Reconhecimento do serviço FTP e validação manual de autenticação documentados.
-- [x] Simulação FTP executada com Medusa e resultado registrado.
-- [x] Cenário DVWA testado com Medusa; combinação `admin` / `password` confirmada manualmente.
-- [ ] Validar a persistência do IP do Metasploitable após reinicialização.
-- [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
-- [ ] Adicionar as capturas de tela em `images/evidencias/`.
-- [x] Executar e documentar o cenário web com DVWA.
-- [x] Identificar SMB no alvo: portas 139/445 abertas, Samba e workgroup WORKGROUP.
-- [x] Enumerar usuários SMB e documentar o Password Spraying; `msfadmin` foi encontrado com acesso ao `ADMIN# Laboratório de Brute Force com Kali Linux e Medusa
+- [x] **FTP:** reconhecimento da porta 21, validação manual e simulação com Medusa. Resultado registrado em [docs/02-ataque-ftp.md](docs/02-ataque-ftp.md).
+- [x] **DVWA:** análise do formulário GET e simulação com Medusa. A combinação encontrada foi validada manualmente. Resultado registrado em [docs/03-ataque-dvwa.md](docs/03-ataque-dvwa.md).
+- [x] **SMB:** reconhecimento das portas 139/445, enumeração de contas e Password Spraying. O Medusa reportou acesso ao compartilhamento `ADMIN$` para `msfadmin`. Resultado registrado em [docs/04-password-spraying-smb.md](docs/04-password-spraying-smb.md).
 
-> Projeto prático de cibersegurança desenvolvido como desafio educacional da DIO.
+## Pendências técnicas
 
-Laboratório prático de cibersegurança utilizando Kali Linux e Medusa para simulação de ataques de força bruta e Password Spraying em ambientes controlados. Inclui testes em FTP, DVWA e SMB, documentação técnica, evidências, análise de vulnerabilidades e medidas de mitigação.
+- [ ] Reiniciar o Metasploitable 2 e confirmar que o IP estático `192.168.100.10` permanece configurado.
+- [ ] Confirmar com o instrutor se a Rede Interna `lab-int` atende ao requisito de rede do desafio ou se é necessário alterar para Host-only.
+- [ ] Revisar as recomendações de mitigação à luz dos resultados dos três cenários.
 
-## Objetivo
+## Evidências e formato da entrega
 
-Configurar um ambiente de testes isolado, executar simulações controladas de autenticação em serviços vulneráveis e documentar os resultados para compreender os riscos de senhas fracas e as medidas de proteção.
-
-## Escopo do desafio
-
-- **FTP:** simulação controlada de tentativas de autenticação.
-- **Web (DVWA):** automação de tentativas em formulário de autenticação.
-- **SMB:** estudo de enumeração de usuários e Password Spraying.
-- **Documentação:** registro das configurações, wordlists de teste, comandos, evidências, resultados e recomendações de mitigação.
-
-## Ambiente de laboratório
-
-| Componente | Finalidade |
-|---|---|
-| Kali Linux | Máquina utilizada para os testes de auditoria (`192.168.100.20`) |
-| Metasploitable 2 | Máquina vulnerável para práticas em laboratório (`192.168.100.10`) |
-| DVWA | Aplicação web intencionalmente vulnerável para o cenário web |
-| Oracle VirtualBox | Virtualização das máquinas |
-| Rede Interna | Rede interna do VirtualBox chamada `lab-int` |
-
-> A configuração observada utiliza **Rede Interna (Internal Network)** do VirtualBox, não o modo **Host-only Adapter**. Os detalhes e as pendências de validação estão em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md).
-
-## Estrutura do repositório
-
-```text
-.
-├── README.md
-├── docs/
-│   ├── 01-configuracao-laboratorio.md
-│   ├── 02-ataque-ftp.md
-│   ├── 03-ataque-dvwa.md
-│   ├── 04-password-spraying-smb.md
-│   └── 05-mitigacoes.md
-├── images/
-│   └── evidencias/
-├── scripts/
-└── wordlists/
-    ├── passwords-ftp.txt
-    └── passwords-dvwa.txt
-```
-
-## Andamento
-
-- [x] Repositório público criado.
-- [x] Estrutura inicial de documentação criada.
-- [x] Configuração inicial da rede e endereços IP documentada.
-- [x] Reconhecimento do serviço FTP e validação manual de autenticação documentados.
-- [x] Simulação FTP executada com Medusa e resultado registrado.
-- [x] Cenário DVWA testado com Medusa; combinação `admin` / `password` confirmada manualmente.
-- [ ] Validar a persistência do IP do Metasploitable após reinicialização.
-- [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
-- [ ] Adicionar as capturas de tela em `images/evidencias/`.
-- [x] Executar e documentar o cenário web com DVWA.
-- [x] Identificar SMB no alvo: portas 139/445 abertas, Samba e workgroup WORKGROUP.
-.
-- [ ] Revisar os resultados e as medidas de mitigação.
-
-## Como a documentação será apresentada
-
-Cada cenário terá:
-1. Objetivo e descrição do teste.
-2. Ambiente e pré-requisitos.
-3. Procedimento realizado e comandos utilizados.
-4. Evidências (quando aplicável).
-5. Resultado observado — preenchido somente após a execução.
-6. Análise e recomendações de segurança.
+Esta versão do repositório **não inclui capturas de tela**, conforme opção adotada para a entrega. Os procedimentos, comandos, saídas observadas e análises estão descritos nos arquivos da pasta `docs/`.
 
 ## Uso responsável
 
-Este material tem finalidade exclusivamente educacional. Os testes devem ser realizados somente em máquinas próprias ou em ambientes para os quais exista autorização explícita. Mantenha o laboratório isolado e não utilize credenciais reais, listas de senhas obtidas de terceiros ou alvos públicos.
+Este material tem finalidade exclusivamente educacional. Os testes foram realizados em máquinas virtuais próprias, dentro da rede local de laboratório. Não utilize os comandos, listas ou credenciais de teste contra sistemas de terceiros.
 
-## Referência do desafio
+## Referência
 
 Desafio: **Simulando um Ataque de Brute Force de Senhas com Medusa e Kali Linux** — DIO.
