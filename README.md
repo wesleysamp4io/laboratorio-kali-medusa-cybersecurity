@@ -46,11 +46,9 @@ Preparar um ambiente controlado, executar simulações de auditoria de autentica
 - [x] **DVWA:** análise do formulário GET e simulação com Medusa. A combinação encontrada foi validada manualmente. Resultado registrado em [docs/03-ataque-dvwa.md](docs/03-ataque-dvwa.md).
 - [x] **SMB:** reconhecimento das portas 139/445, enumeração de contas e Password Spraying. O Medusa reportou acesso ao compartilhamento `ADMIN$` para `msfadmin`. Resultado registrado em [docs/04-password-spraying-smb.md](docs/04-password-spraying-smb.md).
 
-## Pendências técnicas
+## Mitigações
 
-- [ ] Reiniciar o Metasploitable 2 e confirmar que o IP estático `192.168.100.10` permanece configurado.
-- [ ] Confirmar com o instrutor se a Rede Interna `lab-int` atende ao requisito de rede do desafio ou se é necessário alterar para Host-only.
-- [ ] Revisar as recomendações de mitigação à luz dos resultados dos três cenários.
+As recomendações defensivas relacionadas aos achados dos três cenários estão em [docs/05-mitigacoes.md](docs/05-mitigacoes.md). Elas são propostas de melhoria e não são apresentadas como correções já implementadas ou testadas.
 
 ## Evidências e formato da entrega
 
