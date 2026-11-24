@@ -44,7 +44,7 @@ O Nmap também exibiu um aviso sobre a resolução DNS reversa, sem impedir a id
 - [x] Confirmar o IP do alvo: `192.168.100.10`.
 - [x] Confirmar que as portas SMB 139 e 445 estão abertas.
 - [x] Enumerar usuários disponibilizados pelo serviço.
-- [ ] Preparar uma pequena lista de contas fictícias/de laboratório.
+- [x] Preparar uma lista curta com três contas enumeradas: `msfadmin`, `user` e `root`.
 - [x] Confirmar a disponibilidade do módulo SMB no Medusa (`smbnt.mod`, versão `3.0`).
 - [ ] Executar o cenário de Password Spraying somente após identificar as contas e definir uma senha de teste autorizada.
 - [ ] Registrar os resultados e evidências.
@@ -107,9 +107,19 @@ tomcat55, sync
 
 **Interpretação:** a enumeração SMB funcionou e revelou nomes de contas locais. A lista inclui contas de serviço e contas do sistema; a enumeração, por si só, não prova que todas aceitam autenticação SMB nem que sejam contas interativas. Para o exercício, a próxima etapa é conferir o módulo SMB disponível no Medusa e selecionar apenas contas de laboratório adequadas, sem tentar senhas contra a lista inteira indiscriminadamente.
 
+## Lista de usuários para o exercício
+
+Foi criada a lista `users-smb.txt` com três nomes que apareceram na enumeração SMB:
+
+- `msfadmin`
+- `user`
+- `root`
+
+A lista também foi adicionada ao repositório em [`wordlists/users-smb.txt`](../wordlists/users-smb.txt). A enumeração demonstra que os nomes são expostos pelo serviço, mas não confirma que todas essas contas aceitem autenticação SMB.
+
 ## Procedimento de Password Spraying
 
-Descrever os passos, comandos e parâmetros efetivamente utilizados somente após a execução no laboratório. O teste deverá usar contas de laboratório identificadas e uma senha de teste definida para o exercício.
+O exercício será limitado ao host de laboratório `192.168.100.10`, a uma única senha de teste e aos três nomes listados. O teste deve ser executado de forma sequencial, sem encerrar após a primeira correspondência, para que cada conta seja avaliada. O resultado será registrado apenas após a execução.
 
 ## Evidências
 
@@ -124,6 +134,7 @@ Adicionar capturas próprias em `images/evidencias/`, ocultando credenciais ou d
 - Serviço identificado: `netbios-ssn` / Samba `smbd 3.X - 4.X`.
 - Workgroup: `WORKGROUP`.
 - Enumeração de usuários: concluída; a saída visível incluiu `msfadmin`, `user`, `root` e várias contas de serviço.
+- Lista para o exercício: `users-smb.txt` com `msfadmin`, `user` e `root`.
 - Password Spraying: ainda não executado.
 
 ## Análise
