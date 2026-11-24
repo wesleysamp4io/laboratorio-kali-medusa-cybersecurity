@@ -58,7 +58,8 @@ Configurar um ambiente de testes isolado, executar simulações controladas de a
 - [ ] Confirmar se a modalidade de rede utilizada atende à orientação do instrutor.
 - [ ] Adicionar as capturas de tela em `images/evidencias/`.
 - [x] Executar e documentar o cenário web com DVWA.
-- [ ] Executar e documentar o cenário SMB.
+- [x] Identificar SMB no alvo: portas 139/445 abertas, Samba e workgroup WORKGROUP.
+- [ ] Enumerar usuários SMB e documentar o cenário de Password Spraying.
 - [ ] Revisar os resultados e as medidas de mitigação.
 
 ## Como a documentação será apresentada
