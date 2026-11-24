@@ -81,9 +81,9 @@ ping -c 4 192.168.100.10
 - [ ] Verificar e documentar o isolamento da rede externa.
 - [ ] Adicionar capturas de tela em `images/evidencias/`.
 
-## Evidências
+## Evidências e apresentação
 
-As capturas de tela das configurações e dos testes serão organizadas na pasta `images/evidencias/`.
+Esta entrega não inclui capturas de tela. A configuração do ambiente e os resultados de conectividade estão descritos neste documento em texto.
 
 ## Observações
 
