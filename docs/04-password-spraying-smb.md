@@ -65,6 +65,28 @@ smbnt.mod :: Brute force module for SMB (SMBv1-3, Signing, LM/NTLM/LMv2/NTLMv2) 
 
 Isso confirma que o módulo `smbnt` está disponível no Medusa 2.3 e que oferece suporte a SMBv1–v3 e aos métodos de autenticação indicados na saída.
 
+## Opções do módulo SMB no Medusa
+
+Foi executado:
+
+```bash
+medusa -M smbnt -q
+```
+
+**Resultado observado:** módulo `smbnt.mod`, versão `3.0`, com suporte indicado a SMBv1–v3 e autenticação LM/NTLM/LMv2/NTLMv2.
+
+Opções relevantes exibidas:
+
+| Opção | Finalidade |
+|---|---|
+| `-U` | Arquivo com nomes de usuários |
+| `-p` | Uma única senha |
+| `-P` | Arquivo com senhas |
+| `AUTH` | Seleção do método de autenticação |
+| `MODE` | Seleção do modo de conexão SMB/NetBIOS |
+
+Para demonstrar Password Spraying, o planejamento é utilizar uma lista pequena de contas identificadas e uma única senha de teste, sempre no alvo local autorizado.
+
 ## Enumeração de usuários
 
 Foi executado no Kali:
