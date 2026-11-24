@@ -15,7 +15,7 @@ O arquivo [`passwords-ftp.txt`](passwords-ftp.txt) contém quatro candidatos de 
 O arquivo [`passwords-dvwa.txt`](passwords-dvwa.txt) contém os quatro candidatos utilizados no cenário Brute Force do DVWA local.
 
 - Lista curta, utilizada somente no formulário de laboratório.
-- O Medusa reportou `welcome1` como `SUCCESS`, mas a validação manual do login falhou; o resultado está em investigação e não deve ser considerado confirmado.
+- No teste corrigido, o Medusa encontrou `password` para `admin`, e o login foi confirmado manualmente no DVWA.
 - Não reutilize esses valores fora deste exercício.
 
 ## Boas práticas
