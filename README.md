@@ -18,7 +18,7 @@ Preparar um ambiente controlado, executar simulações de auditoria de autentica
 | Oracle VirtualBox | Virtualização |
 | Rede `lab-int` | Rede Interna do VirtualBox |
 
-> **Nota de topologia:** as VMs estão ligadas à opção **Rede Interna (Internal Network)** do VirtualBox, com o nome `lab-int`. O texto do desafio também menciona Host-only; são modos diferentes. A configuração aplicada está descrita em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md) e deve ser comparada com a orientação específica do instrutor.
+> **Topologia utilizada:** as VMs se comunicaram pela Rede Interna (`lab-int`) do VirtualBox. Os detalhes estão registrados em [docs/01-configuracao-laboratorio.md](docs/01-configuracao-laboratorio.md).
 
 ## Estrutura do repositório
 
