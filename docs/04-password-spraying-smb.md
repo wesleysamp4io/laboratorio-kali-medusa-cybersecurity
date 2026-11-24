@@ -45,9 +45,25 @@ O Nmap também exibiu um aviso sobre a resolução DNS reversa, sem impedir a id
 - [x] Confirmar que as portas SMB 139 e 445 estão abertas.
 - [x] Enumerar usuários disponibilizados pelo serviço.
 - [ ] Preparar uma pequena lista de contas fictícias/de laboratório.
-- [ ] Confirmar a disponibilidade do módulo SMB no Medusa.
+- [x] Confirmar a disponibilidade do módulo SMB no Medusa (`smbnt.mod`, versão `3.0`).
 - [ ] Executar o cenário de Password Spraying somente após identificar as contas e definir uma senha de teste autorizada.
 - [ ] Registrar os resultados e evidências.
+
+## Verificação do módulo SMB no Medusa
+
+No Kali Linux, foi executado:
+
+```bash
+medusa -d | grep -i smb
+```
+
+**Resultado observado:**
+
+```text
+smbnt.mod :: Brute force module for SMB (SMBv1-3, Signing, LM/NTLM/LMv2/NTLMv2) sessions :: version 3.0
+```
+
+Isso confirma que o módulo `smbnt` está disponível no Medusa 2.3 e que oferece suporte a SMBv1–v3 e aos métodos de autenticação indicados na saída.
 
 ## Enumeração de usuários
 
