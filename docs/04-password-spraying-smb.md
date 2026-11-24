@@ -43,7 +43,7 @@ O Nmap também exibiu um aviso sobre a resolução DNS reversa, sem impedir a id
 
 - [x] Confirmar o IP do alvo: `192.168.100.10`.
 - [x] Confirmar que as portas SMB 139 e 445 estão abertas.
-- [ ] Enumerar usuários disponibilizados pelo serviço.
+- [x] Enumerar usuários disponibilizados pelo serviço.
 - [ ] Preparar uma pequena lista de contas fictícias/de laboratório.
 - [ ] Confirmar a disponibilidade do módulo SMB no Medusa.
 - [ ] Executar o cenário de Password Spraying somente após identificar as contas e definir uma senha de teste autorizada.
@@ -51,7 +51,23 @@ O Nmap também exibiu um aviso sobre a resolução DNS reversa, sem impedir a id
 
 ## Enumeração de usuários
 
-A próxima atividade será consultar os nomes de usuários expostos pelo serviço SMB. Serão documentados somente os nomes retornados pelo alvo local, sem tentar autenticação nesta etapa.
+Foi executado no Kali:
+
+```bash
+enum4linux -U 192.168.100.10
+```
+
+A saída exibiu contas locais do Metasploitable 2. No trecho visível da captura foram identificados:
+
+```text
+games, nobody, bind, proxy, syslog, user, www-data, root,
+news, postgres, bin, mail, distccd, proftpd, dhcp, daemon,
+sshd, man, lp, mysql, gnats, libuuid, backup, msfadmin,
+telnetd, sys, klog, postfix, service, list, irc, ftp,
+tomcat55, sync
+```
+
+**Interpretação:** a enumeração SMB funcionou e revelou nomes de contas locais. A lista inclui contas de serviço e contas do sistema; a enumeração, por si só, não prova que todas aceitam autenticação SMB nem que sejam contas interativas. Para o exercício, a próxima etapa é conferir o módulo SMB disponível no Medusa e selecionar apenas contas de laboratório adequadas, sem tentar senhas contra a lista inteira indiscriminadamente.
 
 ## Procedimento de Password Spraying
 
@@ -69,7 +85,7 @@ Adicionar capturas próprias em `images/evidencias/`, ocultando credenciais ou d
 - Portas SMB identificadas: `139/tcp` e `445/tcp`, ambas abertas.
 - Serviço identificado: `netbios-ssn` / Samba `smbd 3.X - 4.X`.
 - Workgroup: `WORKGROUP`.
-- Enumeração de usuários: pendente.
+- Enumeração de usuários: concluída; a saída visível incluiu `msfadmin`, `user`, `root` e várias contas de serviço.
 - Password Spraying: ainda não executado.
 
 ## Análise
