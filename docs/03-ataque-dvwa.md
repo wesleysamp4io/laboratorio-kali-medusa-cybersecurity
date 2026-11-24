@@ -4,7 +4,7 @@
 
 Documentar a análise do formulário Brute Force do Damn Vulnerable Web Application (DVWA), em ambiente local e autorizado.
 
-## Ambiente observado
+## Ambiente
 
 - Aplicação: Damn Vulnerable Web Application (DVWA).
 - Máquina: Metasploitable 2.
@@ -13,7 +13,7 @@ Documentar a análise do formulário Brute Force do Damn Vulnerable Web Applicat
 - Página: `/dvwa/vulnerabilities/brute/`.
 - Nível de segurança: `Low`.
 
-## Preparação concluída
+## Preparação
 
 - [x] Acessar a página Brute Force.
 - [x] Fazer uma tentativa manual com senha fictícia incorreta.
@@ -22,6 +22,8 @@ Documentar a análise do formulário Brute Force do Damn Vulnerable Web Applicat
 - [x] Confirmar Medusa 2.3 e módulo `web-form` 2.1.
 - [x] Identificar os cookies de sessão no Firefox (os valores não são armazenados neste repositório).
 - [x] Criar a wordlist `passwords-dvwa.txt`.
+- [x] Executar o teste automatizado com o caminho de formulário corrigido.
+- [x] Confirmar manualmente a credencial encontrada pelo Medusa.
 
 ## Observação do formulário
 
@@ -31,7 +33,7 @@ Foi feita uma tentativa manual com o usuário de laboratório `admin` e uma senh
 /dvwa/vulnerabilities/brute/?username=admin&password=[valor-ficticio]&Login=Login
 ```
 
-A aplicação apresentou:
+A aplicação apresentou a mensagem:
 
 ```text
 Username and/or password incorrect.
@@ -69,57 +71,60 @@ Foi criada no Kali a lista `passwords-dvwa.txt`, com quatro candidatos artificia
 
 A lista foi preparada exclusivamente para o DVWA local.
 
-## Primeira execução automatizada
+## Primeira execução e correção
 
-A primeira execução usou o módulo `web-form`, o usuário `admin`, a wordlist `passwords-dvwa.txt`, o método GET e o cookie de sessão do DVWA. O valor do cookie não é reproduzido neste documento.
+Na primeira execução, o Medusa reportou `welcome1 [SUCCESS]`, mas a validação manual dessa combinação falhou. O resultado foi tratado como falso positivo.
 
-O parâmetro `FORM` foi informado com barra inicial:
+A revisão do caminho do formulário identificou que o módulo `web-form` acrescenta a barra inicial ao montar a requisição. Portanto, o valor de `FORM` deve ser informado **sem** a barra inicial. O código-fonte do módulo mostra a montagem do caminho como `GET /%s`. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
 
-```text
-FORM:/dvwa/vulnerabilities/brute/
+## Execução corrigida com Medusa
+
+Com a barra inicial removida do parâmetro `FORM`, foi executado no Kali:
+
+```bash
+medusa -h 192.168.100.10 \
+-u admin \
+-P passwords-dvwa.txt \
+-M web-form \
+-m FORM:dvwa/vulnerabilities/brute/ \
+-m FORM-DATA:"get?username=&password=&Login=Login" \
+-m DENY-SIGNAL:"Username and/or password incorrect." \
+-m CUSTOM-HEADER:"cookie: PHPSESSID=${PHPSESSID}; security=low" \
+-t 1 -f -v 4
 ```
 
-A saída observada foi:
+O valor do cookie foi mantido localmente no terminal e não é reproduzido neste documento.
+
+**Saída observada:**
 
 ```text
-ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: welcome1 [SUCCESS]
+ACCOUNT FOUND: [web-form] Host: 192.168.100.10 User: admin Password: password [SUCCESS]
 ```
 
-A senha reportada pelo Medusa (`welcome1`) foi testada manualmente no formulário Brute Force do DVWA, mas o login **falhou**. Portanto, o `SUCCESS` não confirmou uma credencial válida e deve ser tratado como provável falso positivo.
+## Validação manual
 
-## Investigação e correção pendente
-
-A revisão do código-fonte do módulo mostra que ele monta a requisição como `GET /%s`, acrescentando uma barra inicial ao caminho fornecido em `FORM`. O valor de `FORM` deve, portanto, ser informado sem barra inicial; a configuração anterior pode ter gerado o caminho duplicado `//dvwa/...`. O exemplo de uso do módulo também apresenta o caminho sem barra inicial. <https://sources.debian.org/src/medusa/2.2-7/src/modsrc/web-form.c>
-
-**Próximo ajuste a validar:** usar `FORM:dvwa/vulnerabilities/brute/` e repetir a verificação somente depois de confirmar que o cookie de sessão corresponde à sessão atual do DVWA.
-
-### Diagnóstico HTTP com cURL
-
-Foi enviada uma única requisição de teste com senha deliberadamente incorreta, utilizando a sessão local. O terminal exibiu `HTTP/1.1 200 OK`, mas o filtro não encontrou no corpo da resposta nem a mensagem `Username and/or password incorrect.` nem o texto `Welcome`.
-
-**Interpretação:** o servidor respondeu com HTTP 200, mas a resposta ainda não correspondeu a nenhum dos dois marcadores esperados. Isso não comprova login válido nem inválido; a resposta precisa ser inspecionada para identificar se é a página Brute Force, uma página de login/sessão ou outro conteúdo. O cookie não deve ser exibido ou publicado.
-
-## Próxima verificação
-
-Antes de repetir a lista inteira, validar com uma única requisição controlada que o cookie e o caminho corretos retornam a mensagem de falha conhecida quando é enviada uma senha deliberadamente incorreta. Só depois disso será repetido o teste automatizado, mantendo baixa concorrência e o alvo restrito a `192.168.100.10`.
+A combinação reportada pelo Medusa (`admin` / `password`) foi testada manualmente no formulário Brute Force do DVWA. **O login foi aceito**, confirmando o resultado automatizado.
 
 ## Resultado observado
 
-- Data: 23/11/2026
+- Data da execução corrigida: 24/11/2026.
 - Aplicação: DVWA no Metasploitable 2.
+- Origem: Kali Linux (`192.168.100.20`).
+- Alvo: `192.168.100.10`.
 - Página: Brute Force.
 - Nível de segurança: `Low`.
-- Usuário testado: `admin`.
-- Medusa: `2.3`.
-- Módulo: `web-form` 2.1.
+- Usuário: `admin`.
+- Medusa: versão `2.3`.
+- Módulo: `web-form`, versão `2.1`.
 - Wordlist: `passwords-dvwa.txt`, quatro candidatos.
-- Resultado do Medusa na primeira execução: `welcome1 [SUCCESS]`.
-- Validação manual de `admin` / `welcome1`: falhou.
-- Estado do cenário: em investigação; automação ainda não validada.
+- Resultado: `password [SUCCESS]`.
+- Validação manual: login com `admin` / `password` bem-sucedido.
 
 ## Análise
 
-O formulário demonstrou exposição de parâmetros de autenticação na URL. A primeira execução do Medusa apresentou um falso positivo provável, pois a credencial reportada foi rejeitada no teste manual. O resultado automatizado só será considerado válido depois de confirmar a requisição e o sinal de falha. Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação e oferecer MFA.
+O exercício demonstrou como uma senha fraca pode ser identificada por tentativas automatizadas em um formulário vulnerável. Também mostrou a importância de configurar corretamente o caminho e os campos do formulário, a mensagem de falha e os cookies da sessão para evitar falsos positivos.
+
+Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação, aplicar políticas de senha e oferecer MFA.
 
 ## Evidências
 
