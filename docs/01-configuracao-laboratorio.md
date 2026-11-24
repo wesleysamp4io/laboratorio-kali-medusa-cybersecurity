@@ -79,7 +79,6 @@ ping -c 4 192.168.100.10
 - [ ] Reiniciar o Metasploitable e confirmar a persistência do IP.
 - [ ] Confirmar se a modalidade Rede Interna atende à exigência do instrutor ou se é necessário utilizar Host-only.
 - [ ] Verificar e documentar o isolamento da rede externa.
-- [ ] Adicionar capturas de tela em `images/evidencias/`.
 
 ## Evidências e apresentação
 
