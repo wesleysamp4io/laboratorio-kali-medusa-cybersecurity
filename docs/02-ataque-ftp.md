@@ -158,6 +158,6 @@ O teste foi executado contra uma única máquina de laboratório, com uma única
 
 O exercício demonstrou que uma senha fraca ou previsível pode ser descoberta por tentativas automatizadas quando o serviço permite tentativas repetidas sem controles suficientes. Em ambientes reais, recomenda-se utilizar senhas fortes e únicas, limitar e monitorar tentativas de autenticação, restringir o acesso ao serviço e preferir protocolos seguros, como SFTP ou FTPS, em vez de FTP sem criptografia.
 
-## Evidências
+## Evidências e apresentação
 
-A captura de tela da execução do Medusa foi registrada durante a atividade. Ela ainda deverá ser adicionada manualmente à pasta `images/evidencias/` para acompanhar este relatório.
+Esta entrega não inclui capturas de tela. O reconhecimento, a validação manual e a saída do Medusa estão transcritos neste relatório.
