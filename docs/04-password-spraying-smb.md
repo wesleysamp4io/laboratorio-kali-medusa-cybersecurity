@@ -2,47 +2,76 @@
 
 ## Objetivo
 
-Documentar o estudo de enumeração de usuários e a simulação controlada de Password Spraying em serviço SMB no ambiente autorizado.
+Documentar a enumeração de usuários e a simulação controlada de Password Spraying no serviço SMB do ambiente local autorizado.
 
 ## Conceitos
 
 - **Enumeração de usuários:** identificação de nomes de contas expostos pelo serviço ou ambiente.
-- **Password Spraying:** teste de uma senha de laboratório contra um conjunto limitado de contas fictícias, evitando tentativas indiscriminadas.
+- **Password Spraying:** avaliação controlada de uma senha de teste contra um conjunto pequeno de contas de laboratório, evitando tentativas indiscriminadas.
 
 ## Escopo
 
-- Alvo: somente máquina de laboratório.
-- Serviço: SMB.
-- Contas: usuários fictícios preparados para o exercício.
-- Senhas: valores artificiais, exclusivos do laboratório.
+- Alvo: Metasploitable 2, máquina virtual local.
+- IP do alvo: `192.168.100.10`.
+- Origem: Kali Linux (`192.168.100.20`).
+- Serviço: SMB / Samba.
+- Testes limitados ao ambiente virtual próprio.
+
+## Reconhecimento do serviço
+
+A partir do Kali Linux, foi executado:
+
+```bash
+sudo nmap -sV -p 139,445 192.168.100.10
+```
+
+**Resultado observado:**
+
+| Campo | Resultado |
+|---|---|
+| Host | `192.168.100.10` |
+| Estado do host | `up` |
+| Porta 139/tcp | `open` |
+| Porta 445/tcp | `open` |
+| Serviço | `netbios-ssn` |
+| Serviço identificado | Samba `smbd 3.X - 4.X` |
+| Workgroup | `WORKGROUP` |
+
+O Nmap também exibiu um aviso sobre a resolução DNS reversa, sem impedir a identificação das portas e do serviço.
 
 ## Preparação
 
-- [ ] Confirmar o IP e o serviço SMB do alvo.
-- [ ] Preparar contas fictícias.
-- [ ] Criar uma lista pequena de usuários de teste.
-- [ ] Registrar a ferramenta e os comandos ensinados na aula.
+- [x] Confirmar o IP do alvo: `192.168.100.10`.
+- [x] Confirmar que as portas SMB 139 e 445 estão abertas.
+- [ ] Enumerar usuários disponibilizados pelo serviço.
+- [ ] Preparar uma pequena lista de contas fictícias/de laboratório.
+- [ ] Confirmar a disponibilidade do módulo SMB no Medusa.
+- [ ] Executar o cenário de Password Spraying somente após identificar as contas e definir uma senha de teste autorizada.
+- [ ] Registrar os resultados e evidências.
 
-## Procedimento
+## Enumeração de usuários
 
-Documente os passos realizados, os comandos e a finalidade de cada parâmetro.
+A próxima atividade será consultar os nomes de usuários expostos pelo serviço SMB. Serão documentados somente os nomes retornados pelo alvo local, sem tentar autenticação nesta etapa.
 
-```bash
-# Inserir os comandos executados durante o laboratório.
-```
+## Procedimento de Password Spraying
+
+Descrever os passos, comandos e parâmetros efetivamente utilizados somente após a execução no laboratório. O teste deverá usar contas de laboratório identificadas e uma senha de teste definida para o exercício.
 
 ## Evidências
 
-Adicionar capturas em `images/evidencias/`.
+Adicionar capturas próprias em `images/evidencias/`, ocultando credenciais ou dados que não devam ser publicados.
 
 ## Resultado observado
 
-- Data:
-- Serviço / alvo de laboratório:
-- Resultado da enumeração:
-- Resultado do teste:
-- Evidência relacionada:
+- Data: 24/11/2026
+- Origem: Kali Linux (`192.168.100.20`).
+- Alvo: Metasploitable 2 (`192.168.100.10`).
+- Portas SMB identificadas: `139/tcp` e `445/tcp`, ambas abertas.
+- Serviço identificado: `netbios-ssn` / Samba `smbd 3.X - 4.X`.
+- Workgroup: `WORKGROUP`.
+- Enumeração de usuários: pendente.
+- Password Spraying: ainda não executado.
 
 ## Análise
 
-Explique os riscos observados e como políticas de senha, MFA, monitoramento, segmentação de rede e restrição de acesso SMB ajudam na defesa.
+O reconhecimento confirmou que o serviço SMB está acessível no alvo do laboratório. A enumeração de usuários será a próxima etapa. Medidas defensivas relevantes incluem restringir SMB às redes e aos hosts necessários, desabilitar versões obsoletas, aplicar privilégio mínimo, monitorar falhas de autenticação e utilizar políticas de senha fortes.
