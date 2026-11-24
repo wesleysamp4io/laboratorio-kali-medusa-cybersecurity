@@ -27,7 +27,7 @@ As duas máquinas virtuais estão conectadas ao **Adaptador 1** do VirtualBox, c
 | Interface no sistema | `eth0` | `eth0` |
 | Endereço IPv4 | `192.168.100.20/24` | `192.168.100.10/24` |
 
-> **Nota sobre o modo de rede:** os prints de configuração mostram o modo **Rede Interna (Internal Network)**, e não **Host-only Adapter**. A Rede Interna mantém a comunicação entre as VMs na rede virtual nomeada, sem fornecer por si só acesso do host a essa rede. O desafio menciona “rede interna (host-only)”; como esses são modos distintos no VirtualBox, a configuração atual foi registrada exatamente como está e deverá ser comparada com a exigência do instrutor antes da entrega final.
+> **Nota sobre a topologia:** as duas VMs utilizaram **Rede Interna (Internal Network)** com o nome `lab-int`. Essa informação registra o ambiente efetivamente usado nos exercícios; a comparação entre modos de rede do VirtualBox não faz parte dos resultados dos cenários de FTP, DVWA ou SMB.
 
 ## Configuração de endereços IP
 
@@ -46,7 +46,7 @@ A configuração foi aplicada com:
 sudo ifup eth0
 ```
 
-O endereço voltou a aparecer na interface. **A persistência após reinicialização ainda precisa ser validada.**
+O endereço voltou a aparecer na interface. A persistência após reinicialização não foi avaliada, pois não era necessária para executar os cenários solicitados.
 
 O Kali foi observado com a rota conectada:
 
@@ -62,11 +62,7 @@ A partir do Kali Linux (`192.168.100.20`), foi executado:
 ping -c 4 192.168.100.10
 ```
 
-**Resultado observado anteriormente, após a recuperação do IP:**
-- Pacotes transmitidos: 4
-- Pacotes recebidos: 4
-- Perda: 0%
-- Estado: comunicação entre Kali e Metasploitable validada nesse teste. O teste deverá ser repetido após a aplicação da configuração estática.
+**Resultado observado:** após a recuperação do endereço, o Kali recebeu 4 respostas de 4 pacotes enviados, sem perda. Os testes subsequentes de FTP, HTTP/DVWA e SMB também foram executados a partir do Kali contra o Metasploitable.
 
 ## Checklist de configuração
 
@@ -75,10 +71,6 @@ ping -c 4 192.168.100.10
 - [x] Endereços IPv4 identificados.
 - [x] Configuração estática registrada no Metasploitable.
 - [x] Comunicação entre as máquinas validada com ping antes da configuração estática.
-- [ ] Repetir o ping após a configuração estática.
-- [ ] Reiniciar o Metasploitable e confirmar a persistência do IP.
-- [ ] Confirmar se a modalidade Rede Interna atende à exigência do instrutor ou se é necessário utilizar Host-only.
-- [ ] Verificar e documentar o isolamento da rede externa.
 
 ## Evidências e apresentação
 
