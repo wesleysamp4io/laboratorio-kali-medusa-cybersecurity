@@ -126,6 +126,6 @@ O exercício demonstrou como uma senha fraca pode ser identificada por tentativa
 
 Em aplicações reais, recomenda-se não colocar senhas na URL, utilizar HTTPS, limitar e monitorar tentativas de autenticação, aplicar políticas de senha e oferecer MFA.
 
-## Evidências
+## Evidências e apresentação
 
-Adicionar as capturas em `images/evidencias/`, ocultando todos os valores de cookie, dados de sessão e senhas.
+Esta entrega não inclui capturas de tela. Os passos realizados, os parâmetros utilizados e os resultados observados estão descritos neste relatório. Cookies de sessão não são publicados.
