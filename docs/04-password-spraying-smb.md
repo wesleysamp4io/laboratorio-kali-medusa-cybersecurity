@@ -126,6 +126,6 @@ ACCOUNT FOUND: [smbnt] Host: 192.168.100.10 User: msfadmin Password: msfadmin [S
 
 O exercício demonstrou como uma senha compartilhada ou previsível pode permitir acesso a uma conta SMB. A resposta `ADMIN$ - Access Allowed` indica que o módulo conseguiu acessar o compartilhamento administrativo com a conta encontrada. Em ambientes reais, devem ser usadas senhas únicas por conta, privilégio mínimo, restrição de SMB aos hosts necessários e monitoramento de tentativas repetidas com a mesma senha em várias contas.
 
-## Evidências
+## Evidências e apresentação
 
-Adicionar as capturas em `images/evidencias/`, ocultando informações sensíveis que não devam ser publicadas.
+Esta entrega não inclui capturas de tela. O reconhecimento, a enumeração e a saída observada do Medusa estão documentados em texto neste relatório.
